@@ -1,0 +1,48 @@
+running 1 case(s) via claude provider...
+
+PASS  bash-backup-toolkit        5.79s  $0.1187  2t  [multi-file,project,bash,code]
+    [ok] phase backup           1 try  saved:cases/out/bash-backup-toolkit/backup.sh
+        attempt 1:
+          [ok] regex /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/ — matched /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/
+          [ok] regex /(?i)set\s+-euo\s+pipefail|set\s+-e/ — matched /(?i)set\s+-euo\s+pipefail|set\s+-e/
+          [ok] regex /(?i)tar\b.*z|tar\s+-?c.*z/ — matched /(?i)tar\b.*z|tar\s+-?c.*z/
+          output: ```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: $0 <source-directory>" >&2
+    exit 1
+fi
+
+src="$1"
+timestamp=$(date +%Y%m%d-%H%M%S)
+archive="backup-${timestamp}.tar.gz"
+
+tar -czf "$archive" "$src"
+echo "$archive"
+```
+    [ok] phase restore          1 try  saved:cases/out/bash-backup-toolkit/restore.sh
+        attempt 1:
+          [ok] regex /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/ — matched /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/
+          [ok] regex /(?i)tar\b.*x|tar\s+-?x/ — matched /(?i)tar\b.*x|tar\s+-?x/
+          [ok] judge: restore.sh is a valid bash script that extracts a backup-*.tar.gz archive (matching the format produced by the provided backup.sh) into an optional target directory and validates its arguments. — judge: PASS
+          output: ```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+    echo "Usage: $0 <backup-*.tar.gz> [target-directory]" >&2
+    exit 1
+fi
+
+archive="$1"
+target="${2:-.}"
+
+mkdir -p "$target"
+tar -xzf "$archive" -C "$target"
+```
+
+1 passed, 0 failed — total 5.79s, $0.1187
+
+wrote results/bash-backup-toolkit.report.json

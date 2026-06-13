@@ -1,0 +1,99 @@
+[
+  {
+    "name": "bash-backup-toolkit",
+    "tags": [
+      "multi-file",
+      "project",
+      "bash",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "backup",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```bash\n#!/usr/bin/env bash\nset -euo pipefail\n\nif [[ $# -eq 0 ]]; then\n    echo \"Usage: $0 \u003csource-directory\u003e\" \u003e\u00262\n    exit 1\nfi\n\nsrc=\"$1\"\ntimestamp=$(date +%Y%m%d-%H%M%S)\narchive=\"backup-${timestamp}.tar.gz\"\n\ntar -czf \"$archive\" \"$src\"\necho \"$archive\"\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)set\\s+-euo\\s+pipefail|set\\s+-e/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)set\\s+-euo\\s+pipefail|set\\s+-e/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)tar\\b.*z|tar\\s+-?c.*z/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)tar\\b.*z|tar\\s+-?c.*z/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.05886489999999999,
+            "num_turns": 1,
+            "duration": 2935000000
+          }
+        ],
+        "saved_to": "cases/out/bash-backup-toolkit/backup.sh"
+      },
+      {
+        "name": "restore",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```bash\n#!/usr/bin/env bash\nset -euo pipefail\n\nif [[ $# -eq 0 ]]; then\n    echo \"Usage: $0 \u003cbackup-*.tar.gz\u003e [target-directory]\" \u003e\u00262\n    exit 1\nfi\n\narchive=\"$1\"\ntarget=\"${2:-.}\"\n\nmkdir -p \"$target\"\ntar -xzf \"$archive\" -C \"$target\"\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)tar\\b.*x|tar\\s+-?x/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)tar\\b.*x|tar\\s+-?x/"
+                }
+              },
+              {
+                "scorer": "judge: restore.sh is a valid bash script that extracts a backup-*.tar.gz archive (matching the format produced by the provided backup.sh) into an optional target directory and validates its arguments.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0597869,
+            "num_turns": 1,
+            "duration": 2860000000
+          }
+        ],
+        "saved_to": "cases/out/bash-backup-toolkit/restore.sh"
+      }
+    ],
+    "cost_usd": 0.11865179999999999,
+    "num_turns": 2,
+    "duration": 5795000000
+  }
+]

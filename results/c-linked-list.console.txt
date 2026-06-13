@@ -1,0 +1,87 @@
+running 1 case(s) via claude provider...
+
+PASS  c-linked-list             19.25s  $0.2376  4t  [multi-file,project,c,code]
+    [ok] phase header           1 try  saved:cases/out/c-linked-list/list.h
+        attempt 1:
+          [ok] regex /(?i)#ifndef|#pragma once/ — matched /(?i)#ifndef|#pragma once/
+          [ok] regex /(?i)struct\s+Node/ — matched /(?i)struct\s+Node/
+          [ok] regex /(?i)list_push/ — matched /(?i)list_push/
+          output: ```c
+#ifndef LIST_H
+#define LIST_H
+
+struct Node {
+    int value;
+    struct Node *next;
+};
+
+void list_push(struct Node **head, int value);
+int list_length(struct Node *head);
+void list_free(struct Node *head);
+void list_print(struct Node *head);
+
+#endif
+```
+    [ok] phase impl             1 try  saved:cases/out/c-linked-list/list.c
+        attempt 1:
+          [ok] regex /(?i)#include\s+"list\.h"/ — matched /(?i)#include\s+"list\.h"/
+          [ok] regex /(?i)malloc/ — matched /(?i)malloc/
+          [ok] regex /(?i)list_push/ — matched /(?i)list_push/
+          output: ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "list.h"
+
+void list_push(struct Node **head, int value) {
+    struct Node *node = malloc(sizeof(struct Node));
+    node->value = value;
+    node->next = *head;
+    *head = node;
+}
+
+int list_length(struct Node *head) {
+    int c…
+    [ok] phase main             1 try  saved:cases/out/c-linked-list/main.c
+        attempt 1:
+          [ok] regex /(?i)#include\s+"list\.h"/ — matched /(?i)#include\s+"list\.h"/
+          [ok] regex /(?i)int\s+main/ — matched /(?i)int\s+main/
+          [ok] regex /(?i)list_push|list_free/ — matched /(?i)list_push|list_free/
+          output: ```c
+#include <stdio.h>
+#include "list.h"
+
+int main(void) {
+    struct Node *head = NULL;
+
+    list_push(&head, 10);
+    list_push(&head, 20);
+    list_push(&head, 30);
+
+    list_print(head);
+    printf("Length: %d\n", list_length(head));
+
+    list_free(head);
+    return 0;
+}
+```
+    [ok] phase makefile         1 try  saved:cases/out/c-linked-list/Makefile
+        attempt 1:
+          [ok] regex /(?i)gcc|cc/ — matched /(?i)gcc|cc/
+          [ok] regex /(?m)^clean\s*:/ — matched /(?m)^clean\s*:/
+          [ok] judge: The Makefile compiles list.c and main.c with gcc into an executable and includes a working clean target; targets and prerequisites are syntactically valid make. — judge: PASS
+          output: ```makefile
+CC = gcc
+CFLAGS = -Wall
+TARGET = list_demo
+SRCS = main.c list.c
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
+
+clean:
+	rm -f $(TARGET)
+```
+
+1 passed, 0 failed — total 19.25s, $0.2376
+
+wrote results/c-linked-list.report.json

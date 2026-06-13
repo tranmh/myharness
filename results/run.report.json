@@ -1,0 +1,1189 @@
+[
+  {
+    "name": "api-design-then-impl",
+    "tags": [
+      "phases",
+      "code",
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "design",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "{\"endpoints\":[{\"method\":\"POST\",\"path\":\"/tasks\",\"description\":\"Create a new task with a title and optional description\"},{\"method\":\"GET\",\"path\":\"/tasks\",\"description\":\"List all tasks, optionally filtered by completion status via ?completed=true|false\"},{\"method\":\"GET\",\"path\":\"/tasks/{id}\",\"description\":\"Retrieve a single task by ID\"},{\"method\":\"PATCH\",\"path\":\"/tasks/{id}/complete\",\"description\":\"Mark a task as completed\"},{\"method\":\"DELETE\",\"path\":\"/tasks/{id}\",\"description\":\"Delete a task by ID\"}]}",
+            "scores": [
+              {
+                "scorer": "regex /(?s)^\\s*\\{.*\\}\\s*$/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?s)^\\s*\\{.*\\}\\s*$/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)\"?(method|path)\"?/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\"?(method|path)\"?/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0475649,
+            "num_turns": 1,
+            "duration": 5195000000
+          }
+        ]
+      },
+      {
+        "name": "implement",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\napp.post('/tasks', (req, res) =\u003e {\n  const { title, description } = req.body;\n  if (!title) {\n    return res.status(400).json({ error: 'title is required' });\n  }\n  const task = {\n    id: crypto.randomUUID(),\n    title,\n    description: description ?? null,\n    completed: false,\n    createdAt: new Date().toISOString(),\n  };\n  tasks.push(task);\n  res.status(201).json(task);\n});\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)app\\.(post|get|put|delete)|router\\.(post|get)|function/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)app\\.(post|get|put|delete)|router\\.(post|get)|function/"
+                }
+              },
+              {
+                "scorer": "judge: The code is a plausible Express.js route handler that implements the create-task endpoint from the provided spec, accepting input and returning a response.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.047762900000000004,
+            "num_turns": 1,
+            "duration": 4762000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0953278,
+    "num_turns": 2,
+    "duration": 9957000000
+  },
+  {
+    "name": "bash-oneliner",
+    "tags": [
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "find . -name \"*.log\" -delete",
+            "scores": [
+              {
+                "scorer": "contains \"find\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"find\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)\\.log/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\\.log/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)-delete|rm\\b|-exec/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)-delete|rm\\b|-exec/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0165964,
+            "num_turns": 1,
+            "duration": 4174000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0165964,
+    "num_turns": 1,
+    "duration": 4174000000
+  },
+  {
+    "name": "build-tetris",
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003ctitle\u003eTetris\u003c/title\u003e\n\u003cstyle\u003e\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n  body {\n    background: #1a1a2e;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    font-family: 'Courier New', monospace;\n    color: #eee;\n  }\n  #container {\n    display: flex;\n    gap: 24px;\n    align-items: flex-start;\n  }\n  canvas {\n    display: block;\n    border: 2px solid #444;\n    background: #0a0a1a;\n  }\n  #sidebar {\n    width: 120px;\n    display: flex;\n    flex-direction: column;\n    gap: 20px;\n  }\n  .panel {\n    background: #0a0a1a;\n    border: 2px solid #444;\n    padding: 12px;\n    border-radius: 4px;\n  }\n  .panel h3 {\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 2px;\n    color: #888;\n    margin-bottom: 8px;\n  }\n  .panel .value {\n    font-size: 22px;\n    font-weight: bold;\n    color: #fff;\n  }\n  #next-canvas {\n    display: block;\n    margin: 0 auto;\n  }\n  #overlay {\n    position: absolute;\n    background: rgba(10,10,26,0.88);\n    color: #fff;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    font-size: 14px;\n    padding: 24px;\n    border: 2px solid #444;\n    border-radius: 4px;\n    text-align: center;\n    pointer-events: none;\n  }\n  #overlay h2 { font-size: 28px; color: #f0c040; letter-spacing: 4px; }\n  #overlay .sub { color: #aaa; font-size: 12px; letter-spacing: 1px; }\n  #wrapper { position: relative; }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003cdiv id=\"container\"\u003e\n  \u003cdiv id=\"wrapper\"\u003e\n    \u003ccanvas id=\"board\" width=\"300\" height=\"600\"\u003e\u003c/canvas\u003e\n    \u003cdiv id=\"overlay\"\u003e\n      \u003ch2\u003eTETRIS\u003c/h2\u003e\n      \u003cdiv class=\"sub\"\u003ePRESS ANY KEY TO START\u003c/div\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n  \u003cdiv id=\"sidebar\"\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eScore\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"score-val\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLines\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"lines-val\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLevel\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"level-val\"\u003e1\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eNext\u003c/h3\u003e\n      \u003ccanvas id=\"next-canvas\" width=\"96\" height=\"96\"\u003e\u003c/canvas\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e\n\n\u003cscript\u003e\nconst COLS = 10, ROWS = 20, CELL = 30;\nconst board = document.getElementById('board');\nconst ctx = board.getContext('2d');\nconst nextCanvas = document.getElementById('next-canvas');\nconst nctx = nextCanvas.getContext('2d');\nconst overlay = document.getElementById('overlay');\n\nconst COLORS = [\n  null,\n  '#00cfcf', // I - cyan\n  '#f0e040', // O - yellow\n  '#a040e0', // T - purple\n  '#40e040', // S - green\n  '#e04040', // Z - red\n  '#4070e0', // J - blue\n  '#f09010', // L - orange\n];\n\nconst SHAPES = [\n  null,\n  [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], // I\n  [[2,2],[2,2]],                              // O\n  [[0,3,0],[3,3,3],[0,0,0]],                  // T\n  [[0,4,4],[4,4,0],[0,0,0]],                  // S\n  [[5,5,0],[0,5,5],[0,0,0]],                  // Z\n  [[6,0,0],[6,6,6],[0,0,0]],                  // J\n  [[0,0,7],[7,7,7],[0,0,0]],                  // L\n];\n\nlet grid, piece, nextPiece, score, lines, level, dropInterval, lastTime, raf, state;\n\nfunction createGrid() {\n  return Array.from({length: ROWS}, () =\u003e new Array(COLS).fill(0));\n}\n\nfunction randomPiece() {\n  const id = Math.floor(Math.random() * 7) + 1;\n  const shape = SHAPES[id].map(r =\u003e [...r]);\n  return {\n    id,\n    shape,\n    x: Math.floor((COLS - shape[0].length) / 2),\n    y: id === 1 ? -1 : 0,\n  };\n}\n\nfunction rotate(shape) {\n  const N = shape.length;\n  const M = shape[0].length;\n  const out = Array.from({length: M}, () =\u003e new Array(N).fill(0));\n  for (let r = 0; r \u003c N; r++)\n    for (let c = 0; c \u003c M; c++)\n      out[c][N - 1 - r] = shape[r][c];\n  return out;\n}\n\nfunction collides(p, dx=0, dy=0, s=null) {\n  const shape = s || p.shape;\n  for (let r = 0; r \u003c shape.length; r++)\n    for (let c = 0; c \u003c shape[r].length; c++)\n      if (shape[r][c]) {\n        const nx = p.x + c + dx, ny = p.y + r + dy;\n        if (nx \u003c 0 || nx \u003e= COLS || ny \u003e= ROWS) return true;\n        if (ny \u003e= 0 \u0026\u0026 grid[ny][nx]) return true;\n      }\n  return false;\n}\n\nfunction lock() {\n  piece.shape.forEach((row, r) =\u003e {\n    row.forEach((val, c) =\u003e {\n      if (val \u0026\u0026 piece.y + r \u003e= 0)\n        grid[piece.y + r][piece.x + c] = val;\n    });\n  });\n  clearLines();\n  piece = nextPiece;\n  nextPiece = randomPiece();\n  if (collides(piece)) {\n    gameOver();\n    return;\n  }\n  drawNext();\n}\n\nfunction clearLines() {\n  let cleared = 0;\n  for (let r = ROWS - 1; r \u003e= 0; r--) {\n    if (grid[r].every(v =\u003e v !== 0)) {\n      grid.splice(r, 1);\n      grid.unshift(new Array(COLS).fill(0));\n      cleared++;\n      r++;\n    }\n  }\n  if (cleared) {\n    const pts = [0, 100, 300, 500, 800];\n    score += (pts[cleared] || 800) * level;\n    lines += cleared;\n    level = Math.floor(lines / 10) + 1;\n    dropInterval = Math.max(80, 1000 - (level - 1) * 90);\n    updateUI();\n  }\n}\n\nfunction updateUI() {\n  document.getElementById('score-val').textContent = score;\n  document.getElementById('lines-val').textContent = lines;\n  document.getElementById('level-val').textContent = level;\n}\n\nfunction drawCell(context, x, y, colorId, size=CELL) {\n  if (!colorId) return;\n  const color = COLORS[colorId];\n  const pad = 1;\n  context.fillStyle = color;\n  context.fillRect(x * size + pad, y * size + pad, size - pad*2, size - pad*2);\n  // highlight\n  context.fillStyle = 'rgba(255,255,255,0.18)';\n  context.fillRect(x * size + pad, y * size + pad, size - pad*2, 4);\n  context.fillRect(x * size + pad, y * size + pad, 4, size - pad*2);\n  // shadow\n  context.fillStyle = 'rgba(0,0,0,0.25)';\n  context.fillRect(x * size + pad, y * size + size - pad - 4, size - pad*2, 4);\n  context.fillRect(x * size + size - pad - 4, y * size + pad, 4, size - pad*2);\n}\n\nfunction drawGhost() {\n  let dy = 0;\n  while (!collides(piece, 0, dy + 1)) dy++;\n  if (dy === 0) return;\n  piece.shape.forEach((row, r) =\u003e {\n    row.forEach((val, c) =\u003e {\n      if (val) {\n        const gx = piece.x + c, gy = piece.y + r + dy;\n        if (gy \u003e= 0) {\n          ctx.fillStyle = 'rgba(255,255,255,0.10)';\n          ctx.fillRect(gx * CELL + 1, gy * CELL + 1, CELL - 2, CELL - 2);\n          ctx.strokeStyle = 'rgba(255,255,255,0.18)';\n          ctx.strokeRect(gx * CELL + 1, gy * CELL + 1, CELL - 2, CELL - 2);\n        }\n      }\n    });\n  });\n}\n\nfunction draw() {\n  ctx.clearRect(0, 0, board.width, board.height);\n  // grid lines\n  ctx.strokeStyle = 'rgba(255,255,255,0.04)';\n  ctx.lineWidth = 0.5;\n  for (let r = 0; r \u003c ROWS; r++) {\n    for (let c = 0; c \u003c COLS; c++) {\n      ctx.strokeRect(c * CELL, r * CELL, CELL, CELL);\n    }\n  }\n  // board\n  grid.forEach((row, r) =\u003e row.forEach((val, c) =\u003e drawCell(ctx, c, r, val)));\n  // ghost\n  if (state === 'playing') drawGhost();\n  // piece\n  if (piece) {\n    piece.shape.forEach((row, r) =\u003e {\n      row.forEach((val, c) =\u003e {\n        if (val \u0026\u0026 piece.y + r \u003e= 0) drawCell(ctx, piece.x + c, piece.y + r, val);\n      });\n    });\n  }\n}\n\nfunction drawNext() {\n  nctx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);\n  if (!nextPiece) return;\n  const s = nextPiece.shape;\n  const sz = 24;\n  const offX = Math.floor((nextCanvas.width / sz - s[0].length) / 2);\n  const offY = Math.floor((nextCanvas.height / sz - s.length) / 2);\n  s.forEach((row, r) =\u003e row.forEach((val, c) =\u003e {\n    if (val) drawCell(nctx, offX + c, offY + r, val, sz);\n  }));\n}\n\nfunction gameOver() {\n  state = 'over';\n  overlay.innerHTML = `\u003ch2\u003eGAME OVER\u003c/h2\u003e\u003cdiv class=\"sub\"\u003eScore: ${score}\u003c/div\u003e\u003cdiv class=\"sub\" style=\"margin-top:8px\"\u003ePRESS ANY KEY TO RESTART\u003c/div\u003e`;\n  overlay.style.display = 'flex';\n  cancelAnimationFrame(raf);\n}\n\nfunction startGame() {\n  grid = createGrid();\n  score = 0; lines = 0; level = 1; dropInterval = 1000; lastTime = 0;\n  piece = randomPiece();\n  nextPiece = randomPiece();\n  state = 'playing';\n  overlay.style.display = 'none';\n  updateUI();\n  drawNext();\n  cancelAnimationFrame(raf);\n  raf = requestAnimationFrame(loop);\n}\n\nlet dropAccum = 0;\nfunction loop(ts) {\n  const dt = ts - lastTime;\n  lastTime = ts;\n  dropAccum += dt;\n  if (dropAccum \u003e= dropInterval) {\n    dropAccum = 0;\n    if (!collides(piece, 0, 1)) {\n      piece.y++;\n    } else {\n      lock();\n    }\n  }\n  draw();\n  if (state === 'playing') raf = requestAnimationFrame(loop);\n}\n\ndocument.addEventListener('keydown', e =\u003e {\n  if (state !== 'playing') {\n    startGame();\n    return;\n  }\n  switch(e.key) {\n    case 'ArrowLeft':\n      if (!collides(piece, -1, 0)) piece.x--;\n      break;\n    case 'ArrowRight':\n      if (!collides(piece, 1, 0)) piece.x++;\n      break;\n    case 'ArrowDown':\n      if (!collides(piece, 0, 1)) { piece.y++; score++; updateUI(); }\n      else lock();\n      dropAccum = 0;\n      break;\n    case 'ArrowUp': {\n      const rotated = rotate(piece.shape);\n      // wall kick: try center, then left, then right\n      const kicks = [0, -1, 1, -2, 2];\n      for (const kick of kicks) {\n        if (!collides(piece, kick, 0, rotated)) {\n          piece.shape = rotated;\n          piece.x += kick;\n          break;\n        }\n      }\n      break;\n    }\n    case ' ': {\n      // hard drop\n      let drop = 0;\n      while (!collides(piece, 0, drop + 1)) drop++;\n      piece.y += drop;\n      score += drop * 2;\n      updateUI();\n      lock();\n      dropAccum = 0;\n      break;\n    }\n  }\n  draw();\n});\n\n// Show start screen\nstate = 'start';\noverlay.style.display = 'flex';\ndraw();\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003ccanvas\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003ccanvas\""
+                }
+              },
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)keydown|ArrowLeft|keyCode/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)keydown|ArrowLeft|keyCode/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.10332690000000001,
+            "num_turns": 1,
+            "duration": 50296000000
+          }
+        ],
+        "saved_to": "cases/tetris.html"
+      }
+    ],
+    "cost_usd": 0.10332690000000001,
+    "num_turns": 1,
+    "duration": 50296000000
+  },
+  {
+    "name": "calculator-html",
+    "tags": [
+      "html",
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e\n\u003ctitle\u003eCalculator\u003c/title\u003e\n\u003cstyle\u003e\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n  body {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    min-height: 100vh;\n    background: #1a1a2e;\n    font-family: 'Segoe UI', sans-serif;\n  }\n  .calculator {\n    background: #16213e;\n    border-radius: 16px;\n    padding: 24px;\n    box-shadow: 0 20px 60px rgba(0,0,0,0.5);\n    width: 320px;\n  }\n  .display {\n    background: #0f3460;\n    border-radius: 10px;\n    padding: 16px 20px;\n    margin-bottom: 20px;\n    text-align: right;\n    min-height: 90px;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n  }\n  .display .expression {\n    color: #8892b0;\n    font-size: 14px;\n    min-height: 18px;\n    word-break: break-all;\n  }\n  .display .current {\n    color: #e0e0e0;\n    font-size: 36px;\n    font-weight: 300;\n    word-break: break-all;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n  .buttons {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 12px;\n  }\n  button {\n    border: none;\n    border-radius: 10px;\n    font-size: 18px;\n    padding: 18px 0;\n    cursor: pointer;\n    transition: transform 0.08s, filter 0.08s;\n    font-weight: 500;\n  }\n  button:active { transform: scale(0.93); filter: brightness(0.85); }\n  .btn-number {\n    background: #1a1a3e;\n    color: #e0e0e0;\n  }\n  .btn-number:hover { background: #252550; }\n  .btn-operator {\n    background: #e94560;\n    color: #fff;\n  }\n  .btn-operator:hover { background: #ff6b8a; }\n  .btn-clear {\n    background: #533483;\n    color: #fff;\n  }\n  .btn-clear:hover { background: #6a42a8; }\n  .btn-equals {\n    background: #0f9b58;\n    color: #fff;\n    grid-column: span 2;\n  }\n  .btn-equals:hover { background: #13c46f; }\n  .btn-zero { grid-column: span 2; }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003cdiv class=\"calculator\"\u003e\n  \u003cdiv class=\"display\"\u003e\n    \u003cdiv class=\"expression\" id=\"expression\"\u003e\u003c/div\u003e\n    \u003cdiv class=\"current\" id=\"current\"\u003e0\u003c/div\u003e\n  \u003c/div\u003e\n  \u003cdiv class=\"buttons\"\u003e\n    \u003cbutton class=\"btn-clear\" onclick=\"clearAll()\"\u003eAC\u003c/button\u003e\n    \u003cbutton class=\"btn-clear\" onclick=\"toggleSign()\"\u003e+/-\u003c/button\u003e\n    \u003cbutton class=\"btn-clear\" onclick=\"percent()\"\u003e%\u003c/button\u003e\n    \u003cbutton class=\"btn-operator\" onclick=\"setOperator('/')\"\u003e÷\u003c/button\u003e\n\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('7')\"\u003e7\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('8')\"\u003e8\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('9')\"\u003e9\u003c/button\u003e\n    \u003cbutton class=\"btn-operator\" onclick=\"setOperator('*')\"\u003e×\u003c/button\u003e\n\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('4')\"\u003e4\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('5')\"\u003e5\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('6')\"\u003e6\u003c/button\u003e\n    \u003cbutton class=\"btn-operator\" onclick=\"setOperator('-')\"\u003e−\u003c/button\u003e\n\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('1')\"\u003e1\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('2')\"\u003e2\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDigit('3')\"\u003e3\u003c/button\u003e\n    \u003cbutton class=\"btn-operator\" onclick=\"setOperator('+')\"\u003e+\u003c/button\u003e\n\n    \u003cbutton class=\"btn-number btn-zero\" onclick=\"appendDigit('0')\"\u003e0\u003c/button\u003e\n    \u003cbutton class=\"btn-number\" onclick=\"appendDot()\"\u003e.\u003c/button\u003e\n    \u003cbutton class=\"btn-equals\" onclick=\"calculate()\"\u003e=\u003c/button\u003e\n  \u003c/div\u003e\n\u003c/div\u003e\n\n\u003cscript\u003e\n  let currentValue = '0';\n  let previousValue = '';\n  let operator = null;\n  let shouldResetCurrent = false;\n\n  const currentEl = document.getElementById('current');\n  const expressionEl = document.getElementById('expression');\n\n  function updateDisplay() {\n    currentEl.textContent = currentValue;\n  }\n\n  function appendDigit(digit) {\n    if (shouldResetCurrent) {\n      currentValue = digit;\n      shouldResetCurrent = false;\n    } else {\n      currentValue = currentValue === '0' ? digit : currentValue + digit;\n    }\n    if (currentValue.length \u003e 12) currentValue = currentValue.slice(0, 12);\n    updateDisplay();\n  }\n\n  function appendDot() {\n    if (shouldResetCurrent) {\n      currentValue = '0.';\n      shouldResetCurrent = false;\n      updateDisplay();\n      return;\n    }\n    if (!currentValue.includes('.')) {\n      currentValue += '.';\n      updateDisplay();\n    }\n  }\n\n  function setOperator(op) {\n    if (operator \u0026\u0026 !shouldResetCurrent) {\n      calculate(true);\n    }\n    previousValue = currentValue;\n    operator = op;\n    shouldResetCurrent = true;\n    const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };\n    expressionEl.textContent = previousValue + ' ' + symbols[op];\n  }\n\n  function calculate(chained = false) {\n    if (!operator || previousValue === '') return;\n    const prev = parseFloat(previousValue);\n    const curr = parseFloat(currentValue);\n    let result;\n    switch (operator) {\n      case '+': result = prev + curr; break;\n      case '-': result = prev - curr; break;\n      case '*': result = prev * curr; break;\n      case '/':\n        if (curr === 0) { currentValue = 'Error'; operator = null; previousValue = ''; expressionEl.textContent = ''; updateDisplay(); return; }\n        result = prev / curr;\n        break;\n    }\n    const symbols = { '+': '+', '-': '−', '*': '×', '/': '÷' };\n    if (!chained) expressionEl.textContent = previousValue + ' ' + symbols[operator] + ' ' + currentValue + ' =';\n    result = parseFloat(result.toPrecision(12));\n    currentValue = String(result);\n    if (currentValue.length \u003e 12) currentValue = parseFloat(result.toPrecision(10)).toString();\n    operator = null;\n    previousValue = '';\n    shouldResetCurrent = true;\n    updateDisplay();\n  }\n\n  function clearAll() {\n    currentValue = '0';\n    previousValue = '';\n    operator = null;\n    shouldResetCurrent = false;\n    expressionEl.textContent = '';\n    updateDisplay();\n  }\n\n  function toggleSign() {\n    if (currentValue === '0' || currentValue === 'Error') return;\n    currentValue = currentValue.startsWith('-') ? currentValue.slice(1) : '-' + currentValue;\n    updateDisplay();\n  }\n\n  function percent() {\n    const val = parseFloat(currentValue);\n    if (isNaN(val)) return;\n    currentValue = String(val / 100);\n    updateDisplay();\n  }\n\n  document.addEventListener('keydown', (e) =\u003e {\n    if (e.key \u003e= '0' \u0026\u0026 e.key \u003c= '9') appendDigit(e.key);\n    else if (e.key === '.') appendDot();\n    else if (e.key === '+') setOperator('+');\n    else if (e.key === '-') setOperator('-');\n    else if (e.key === '*') setOperator('*');\n    else if (e.key === '/') { e.preventDefault(); setOperator('/'); }\n    else if (e.key === 'Enter' || e.key === '=') calculate();\n    else if (e.key === 'Escape') clearAll();\n    else if (e.key === 'Backspace') {\n      if (currentValue.length \u003e 1) currentValue = currentValue.slice(0, -1);\n      else currentValue = '0';\n      updateDisplay();\n    }\n  });\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003cbutton\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003cbutton\""
+                }
+              },
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "judge: The HTML is a working calculator: clicking the digit and operator buttons updates a display and the JavaScript correctly computes basic arithmetic such as addition and multiplication.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.08101190000000001,
+            "num_turns": 1,
+            "duration": 29140000000
+          }
+        ],
+        "saved_to": "out/calc/calc.html"
+      }
+    ],
+    "cost_usd": 0.08101190000000001,
+    "num_turns": 1,
+    "duration": 29140000000
+  },
+  {
+    "name": "capital-of-france",
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "Paris",
+            "scores": [
+              {
+                "scorer": "contains \"Paris\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Paris\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0058255999999999985,
+            "num_turns": 1,
+            "duration": 1903000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0058255999999999985,
+    "num_turns": 1,
+    "duration": 1903000000
+  },
+  {
+    "name": "code-review",
+    "tags": [
+      "judge",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "## Code Review: `average(nums)`\n\n### Bug: Division by zero on empty input\n\nIf `nums` is empty, `len(nums)` is `0`, causing a `ZeroDivisionError` at runtime.\n\n```python\naverage([])  # ZeroDivisionError: division by zero\n```\n\n### Minor issue: No type handling\n\nNon-numeric values in the list will raise a `TypeError` mid-loop with no clear message.\n\n---\n\n### Fix\n\n```python\ndef average(nums):\n    if not nums:\n        raise ValueError(\"average() requires a non-empty list\")\n    return sum(nums) / len(nums)\n```\n\n**Changes:**\n- **Guard clause** — raises `ValueError` with a clear message instead of a cryptic `ZeroDivisionError`.\n- **`sum()` builtin** — replaces the manual loop; cleaner and faster.\n\nIf your use case prefers returning `None` (or `0`) for an empty list instead of raising, swap the guard:\n\n```python\ndef average(nums):\n    return sum(nums) / len(nums) if nums else None\n```\n\nChoose whichever contract fits your callers — raising is generally better when empty input signals a caller bug, returning `None` when it's a normal case to handle.",
+            "scores": [
+              {
+                "scorer": "judge: The review identifies the division-by-zero bug when the input list is empty, explains it clearly, and proposes a reasonable fix such as a guard for an empty list.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0500869,
+            "num_turns": 1,
+            "duration": 8294000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0500869,
+    "num_turns": 1,
+    "duration": 8294000000
+  },
+  {
+    "name": "csv-to-json",
+    "tags": [
+      "data"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"Paris\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"Berlin\"\n  }\n]",
+            "scores": [
+              {
+                "scorer": "contains \"\\\"name\\\"\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\\\"name\\\"\""
+                }
+              },
+              {
+                "scorer": "contains \"\\\"age\\\"\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\\\"age\\\"\""
+                }
+              },
+              {
+                "scorer": "contains \"\\\"city\\\"\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\\\"city\\\"\""
+                }
+              },
+              {
+                "scorer": "contains \"Alice\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Alice\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.018162400000000002,
+            "num_turns": 1,
+            "duration": 5061000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.018162400000000002,
+    "num_turns": 1,
+    "duration": 5061000000
+  },
+  {
+    "name": "fizzbuzz",
+    "tags": [
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\ndef fizzbuzz(n):\n    for i in range(1, n + 1):\n        if i % 3 == 0 and i % 5 == 0:\n            print(\"FizzBuzz\")\n        elif i % 3 == 0:\n            print(\"Fizz\")\n        elif i % 5 == 0:\n            print(\"Buzz\")\n        else:\n            print(i)\n```",
+            "scores": [
+              {
+                "scorer": "contains \"Fizz\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Fizz\""
+                }
+              },
+              {
+                "scorer": "contains \"Buzz\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Buzz\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)fizzbuzz/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)fizzbuzz/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.018551400000000003,
+            "num_turns": 1,
+            "duration": 3646000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.018551400000000003,
+    "num_turns": 1,
+    "duration": 3646000000
+  },
+  {
+    "name": "haiku-poem",
+    "tags": [
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "Crimson leaves now fall\nCrisp wind whispers through bare trees\nSummer fades to sleep",
+            "scores": [
+              {
+                "scorer": "judge: The output is a three-line haiku about autumn that follows the 5-7-5 syllable pattern and contains vivid sensory imagery.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0173584,
+            "num_turns": 1,
+            "duration": 3042000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0173584,
+    "num_turns": 1,
+    "duration": 3042000000
+  },
+  {
+    "name": "json-extract",
+    "tags": [
+      "data"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "{\"name\": \"Ada Lovelace\", \"year\": 1815, \"city\": \"London\"}",
+            "scores": [
+              {
+                "scorer": "regex /\"name\"\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\"name\"\\s*:/"
+                }
+              },
+              {
+                "scorer": "regex /\"year\"\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\"year\"\\s*:/"
+                }
+              },
+              {
+                "scorer": "regex /\"city\"\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\"city\"\\s*:/"
+                }
+              },
+              {
+                "scorer": "regex /(?s)^\\s*\\{.*\\}\\s*$/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?s)^\\s*\\{.*\\}\\s*$/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0163364,
+            "num_turns": 1,
+            "duration": 2808000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0163364,
+    "num_turns": 1,
+    "duration": 2808000000
+  },
+  {
+    "name": "logic-puzzle",
+    "tags": [
+      "reasoning"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "Alice",
+            "scores": [
+              {
+                "scorer": "contains \"Alice\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Alice\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0448829,
+            "num_turns": 1,
+            "duration": 3768000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0448829,
+    "num_turns": 1,
+    "duration": 3768000000
+  },
+  {
+    "name": "markdown-table",
+    "tags": [
+      "data"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "| Name | Age | City |\n|------|-----|--------|\n| Alice | 30 | Paris |\n| Bob | 25 | Berlin |",
+            "scores": [
+              {
+                "scorer": "regex /\\|.*\\|.*\\|/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\|.*\\|.*\\|/"
+                }
+              },
+              {
+                "scorer": "regex /\\|\\s*-+\\s*\\|/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\|\\s*-+\\s*\\|/"
+                }
+              },
+              {
+                "scorer": "contains \"Alice\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"Alice\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.016584400000000003,
+            "num_turns": 1,
+            "duration": 2499000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.016584400000000003,
+    "num_turns": 1,
+    "duration": 2499000000
+  },
+  {
+    "name": "refactor-then-test",
+    "tags": [
+      "phases",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "write-function",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\ndef is_palindrome(s):\n    cleaned = ''.join(s.lower().split())\n    return cleaned == cleaned[::-1]\n```",
+            "scores": [
+              {
+                "scorer": "contains \"def is_palindrome\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"def is_palindrome\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)return/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)return/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.045558900000000006,
+            "num_turns": 1,
+            "duration": 2421000000
+          }
+        ],
+        "saved_to": "out/refactor/is_palindrome.py"
+      },
+      {
+        "name": "write-tests",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\nimport unittest\nfrom solution import is_palindrome\n\n\nclass TestIsPalindrome(unittest.TestCase):\n\n    def test_simple_palindrome(self):\n        self.assertTrue(is_palindrome(\"racecar\"))\n\n    def test_simple_non_palindrome(self):\n        self.assertFalse(is_palindrome(\"hello\"))\n\n    def test_case_insensitive(self):\n        self.assertTrue(is_palindrome(\"Racecar\"))\n        self.assertTrue(is_palindrome(\"RaceCar\"))\n\n    def test_spaces_ignored(self):\n        self.assertTrue(is_palindrome(\"a man a plan a canal Panama\"))\n        self.assertTrue(is_palindrome(\"never odd or even\"))\n\n    def test_mixed_case_and_spaces(self):\n        self.assertTrue(is_palindrome(\"Was it a car or a cat I saw\"))\n\n    def test_single_character(self):\n        self.assertTrue(is_palindrome(\"a\"))\n\n    def test_empty_string(self):\n        self.assertTrue(is_palindrome(\"\"))\n\n    def test_two_same_chars(self):\n        self.assertTrue(is_palindrome(\"aa\"))\n\n    def test_two_different_chars(self):\n        self.assertFalse(is_palindrome(\"ab\"))\n\n    def test_all_spaces(self):\n        self.assertTrue(is_palindrome(\"   \"))\n\n    def test_non_palindrome_with_spaces(self):\n        self.assertFalse(is_palindrome(\"hello world\"))\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n```",
+            "scores": [
+              {
+                "scorer": "contains \"import unittest\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"import unittest\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)assert/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)assert/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0511849,
+            "num_turns": 1,
+            "duration": 5767000000
+          }
+        ],
+        "saved_to": "out/refactor/test_is_palindrome.py"
+      }
+    ],
+    "cost_usd": 0.0967438,
+    "num_turns": 2,
+    "duration": 8188000000
+  },
+  {
+    "name": "regex-author",
+    "tags": [
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            "scores": [
+              {
+                "scorer": "contains \"^\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"^\""
+                }
+              },
+              {
+                "scorer": "contains \"$\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"$\""
+                }
+              },
+              {
+                "scorer": "contains \"@\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"@\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.019245400000000003,
+            "num_turns": 1,
+            "duration": 7042000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.019245400000000003,
+    "num_turns": 1,
+    "duration": 7042000000
+  },
+  {
+    "name": "sentiment",
+    "tags": [
+      "qa",
+      "reasoning"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "positive",
+            "scores": [
+              {
+                "scorer": "exact \"positive\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "output equals \"positive\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.037143,
+            "num_turns": 1,
+            "duration": 2572000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.037143,
+    "num_turns": 1,
+    "duration": 2572000000
+  },
+  {
+    "name": "simple-arithmetic",
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "391",
+            "scores": [
+              {
+                "scorer": "regex /\\b391\\b/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\b391\\b/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.044646899999999996,
+            "num_turns": 1,
+            "duration": 1888000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.044646899999999996,
+    "num_turns": 1,
+    "duration": 1888000000
+  },
+  {
+    "name": "slugify",
+    "tags": [
+      "code",
+      "data"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "hello-world-a-friendly-guide",
+            "scores": [
+              {
+                "scorer": "exact \"hello-world-a-friendly-guide\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "output equals \"hello-world-a-friendly-guide\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0164944,
+            "num_turns": 1,
+            "duration": 2986000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0164944,
+    "num_turns": 1,
+    "duration": 2986000000
+  },
+  {
+    "name": "snake-game",
+    "tags": [
+      "game",
+      "html"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e\n\u003ctitle\u003eSnake\u003c/title\u003e\n\u003cstyle\u003e\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n  body {\n    background: #1a1a2e;\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    height: 100vh;\n    font-family: 'Courier New', monospace;\n    color: #e0e0e0;\n  }\n  h1 { font-size: 2rem; margin-bottom: 10px; letter-spacing: 4px; color: #4ecca3; }\n  #score-board {\n    font-size: 1.2rem;\n    margin-bottom: 12px;\n    color: #a0a0c0;\n  }\n  #score { color: #4ecca3; font-weight: bold; }\n  canvas {\n    border: 2px solid #4ecca3;\n    box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);\n    background: #0f0f23;\n  }\n  #message {\n    margin-top: 14px;\n    font-size: 1rem;\n    color: #a0a0c0;\n    height: 1.2em;\n  }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003ch1\u003eSNAKE\u003c/h1\u003e\n\u003cdiv id=\"score-board\"\u003eSCORE: \u003cspan id=\"score\"\u003e0\u003c/span\u003e\u003c/div\u003e\n\u003ccanvas id=\"c\" width=\"400\" height=\"400\"\u003e\u003c/canvas\u003e\n\u003cdiv id=\"message\"\u003ePress any arrow key to start\u003c/div\u003e\n\n\u003cscript\u003e\nconst canvas = document.getElementById('c');\nconst ctx = canvas.getContext('2d');\nconst scoreEl = document.getElementById('score');\nconst msgEl = document.getElementById('message');\n\nconst CELL = 20;\nconst COLS = canvas.width / CELL;\nconst ROWS = canvas.height / CELL;\n\nlet snake, dir, nextDir, food, score, running, loop;\n\nfunction init() {\n  snake = [\n    { x: 10, y: 10 },\n    { x: 9,  y: 10 },\n    { x: 8,  y: 10 }\n  ];\n  dir = { x: 1, y: 0 };\n  nextDir = { x: 1, y: 0 };\n  score = 0;\n  scoreEl.textContent = 0;\n  running = false;\n  placeFood();\n  draw();\n}\n\nfunction placeFood() {\n  let pos;\n  do {\n    pos = {\n      x: Math.floor(Math.random() * COLS),\n      y: Math.floor(Math.random() * ROWS)\n    };\n  } while (snake.some(s =\u003e s.x === pos.x \u0026\u0026 s.y === pos.y));\n  food = pos;\n}\n\nfunction step() {\n  dir = nextDir;\n  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };\n\n  if (head.x \u003c 0 || head.x \u003e= COLS || head.y \u003c 0 || head.y \u003e= ROWS ||\n      snake.some(s =\u003e s.x === head.x \u0026\u0026 s.y === head.y)) {\n    gameOver();\n    return;\n  }\n\n  snake.unshift(head);\n\n  if (head.x === food.x \u0026\u0026 head.y === food.y) {\n    score++;\n    scoreEl.textContent = score;\n    placeFood();\n  } else {\n    snake.pop();\n  }\n\n  draw();\n}\n\nfunction draw() {\n  ctx.clearRect(0, 0, canvas.width, canvas.height);\n\n  // Grid dots\n  ctx.fillStyle = 'rgba(255,255,255,0.03)';\n  for (let x = 0; x \u003c COLS; x++) {\n    for (let y = 0; y \u003c ROWS; y++) {\n      ctx.fillRect(x * CELL + CELL / 2 - 1, y * CELL + CELL / 2 - 1, 2, 2);\n    }\n  }\n\n  // Food\n  const fx = food.x * CELL + CELL / 2;\n  const fy = food.y * CELL + CELL / 2;\n  ctx.beginPath();\n  ctx.arc(fx, fy, CELL / 2 - 3, 0, Math.PI * 2);\n  ctx.fillStyle = '#ff6b6b';\n  ctx.shadowColor = '#ff6b6b';\n  ctx.shadowBlur = 10;\n  ctx.fill();\n  ctx.shadowBlur = 0;\n\n  // Snake\n  snake.forEach((seg, i) =\u003e {\n    const t = 1 - i / snake.length;\n    const r = Math.round(78 * t);\n    const g = Math.round(204 * t + 100 * (1 - t));\n    const b = Math.round(163 * t + 200 * (1 - t));\n    ctx.fillStyle = `rgb(${r},${g},${b})`;\n    ctx.shadowColor = i === 0 ? '#4ecca3' : 'transparent';\n    ctx.shadowBlur = i === 0 ? 8 : 0;\n    ctx.fillRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2);\n  });\n  ctx.shadowBlur = 0;\n\n  // Eyes on head\n  const head = snake[0];\n  ctx.fillStyle = '#0f0f23';\n  const eyeOffset = dir.x !== 0\n    ? [{ ex: 5 * dir.x, ey: -3 }, { ex: 5 * dir.x, ey: 3 }]\n    : [{ ex: -3, ey: 5 * dir.y }, { ex: 3, ey: 5 * dir.y }];\n  eyeOffset.forEach(e =\u003e {\n    ctx.beginPath();\n    ctx.arc(\n      head.x * CELL + CELL / 2 + e.ex,\n      head.y * CELL + CELL / 2 + e.ey,\n      2, 0, Math.PI * 2\n    );\n    ctx.fill();\n  });\n}\n\nfunction gameOver() {\n  clearInterval(loop);\n  running = false;\n  msgEl.textContent = `Game over! Score: ${score} — Press arrow key to restart`;\n\n  // Flash effect\n  let flashes = 0;\n  const flash = setInterval(() =\u003e {\n    ctx.fillStyle = `rgba(255, 107, 107, ${flashes % 2 === 0 ? 0.15 : 0})`;\n    ctx.fillRect(0, 0, canvas.width, canvas.height);\n    if (++flashes \u003e= 6) clearInterval(flash);\n  }, 80);\n}\n\nfunction start() {\n  if (!running) {\n    init();\n    running = true;\n    msgEl.textContent = '';\n    loop = setInterval(step, 120);\n  }\n}\n\ndocument.addEventListener('keydown', e =\u003e {\n  const keys = {\n    ArrowUp:    { x: 0,  y: -1 },\n    ArrowDown:  { x: 0,  y:  1 },\n    ArrowLeft:  { x: -1, y:  0 },\n    ArrowRight: { x: 1,  y:  0 }\n  };\n  if (!keys[e.key]) return;\n  e.preventDefault();\n  const d = keys[e.key];\n  if (d.x === -dir.x \u0026\u0026 d.y === -dir.y) return; // no reversing\n  nextDir = d;\n  if (!running) start();\n});\n\ninit();\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003ccanvas\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003ccanvas\""
+                }
+              },
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)keydown|ArrowLeft|ArrowUp|keyCode/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)keydown|ArrowLeft|ArrowUp|keyCode/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0763539,
+            "num_turns": 1,
+            "duration": 26728000000
+          }
+        ],
+        "saved_to": "out/snake/snake.html"
+      }
+    ],
+    "cost_usd": 0.0763539,
+    "num_turns": 1,
+    "duration": 26728000000
+  },
+  {
+    "name": "sql-query",
+    "tags": [
+      "code",
+      "data"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "SELECT customers.name, SUM(orders.total) as total_sum\nFROM customers\nJOIN orders ON customers.id = orders.customer_id\nGROUP BY customers.id, customers.name",
+            "scores": [
+              {
+                "scorer": "contains \"SELECT\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"SELECT\""
+                }
+              },
+              {
+                "scorer": "contains \"JOIN\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"JOIN\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)group\\s+by/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)group\\s+by/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0178564,
+            "num_turns": 1,
+            "duration": 5146000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0178564,
+    "num_turns": 1,
+    "duration": 5146000000
+  },
+  {
+    "name": "summarize",
+    "tags": [
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "Water evaporates from oceans and lakes into the atmosphere, condenses into clouds, falls as precipitation, and flows back to the sea in a continuous cycle.",
+            "scores": [
+              {
+                "scorer": "judge: The output is a single sentence that accurately and concisely captures the main idea of the water cycle described in the paragraph.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0167004,
+            "num_turns": 1,
+            "duration": 2598000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0167004,
+    "num_turns": 1,
+    "duration": 2598000000
+  },
+  {
+    "name": "tetris-phases",
+    "tags": [
+      "game",
+      "html",
+      "phases",
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "build",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003ctitle\u003eTetris\u003c/title\u003e\n\u003cstyle\u003e\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n  body {\n    background: #1a1a2e;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    font-family: 'Courier New', monospace;\n    color: #eee;\n  }\n  #wrapper {\n    display: flex;\n    gap: 24px;\n    align-items: flex-start;\n  }\n  canvas {\n    border: 2px solid #444;\n    display: block;\n  }\n  #sidebar {\n    width: 120px;\n    display: flex;\n    flex-direction: column;\n    gap: 20px;\n  }\n  .panel {\n    background: #16213e;\n    border: 1px solid #444;\n    padding: 12px;\n    border-radius: 4px;\n  }\n  .panel h3 {\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 1px;\n    color: #888;\n    margin-bottom: 8px;\n  }\n  .panel .value {\n    font-size: 22px;\n    font-weight: bold;\n    color: #e0e0e0;\n  }\n  #nextCanvas {\n    display: block;\n    margin: 0 auto;\n  }\n  #status {\n    font-size: 12px;\n    color: #aaa;\n    line-height: 1.6;\n  }\n  #overlay {\n    position: absolute;\n    top: 0; left: 0; right: 0; bottom: 0;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    background: rgba(0,0,0,0.75);\n    z-index: 10;\n  }\n  #overlay h2 { font-size: 28px; margin-bottom: 12px; color: #fff; }\n  #overlay p  { font-size: 14px; color: #aaa; }\n  #canvasWrap { position: relative; }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003cdiv id=\"wrapper\"\u003e\n  \u003cdiv id=\"canvasWrap\"\u003e\n    \u003ccanvas id=\"board\" width=\"300\" height=\"600\"\u003e\u003c/canvas\u003e\n    \u003cdiv id=\"overlay\"\u003e\n      \u003ch2\u003eTETRIS\u003c/h2\u003e\n      \u003cp\u003ePress any key to start\u003c/p\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n  \u003cdiv id=\"sidebar\"\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eScore\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"scoreVal\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLevel\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"levelVal\"\u003e1\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLines\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"linesVal\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eNext\u003c/h3\u003e\n      \u003ccanvas id=\"nextCanvas\" width=\"80\" height=\"80\"\u003e\u003c/canvas\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003cdiv id=\"status\"\u003e← → Move\u003cbr\u003e↑ Rotate\u003cbr\u003e↓ Soft drop\u003cbr\u003eSpace Hard drop\u003c/div\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e\n\u003cscript\u003e\nconst COLS = 10, ROWS = 20, CELL = 30;\nconst COLORS = [\n  null,\n  '#00f0f0', // I - cyan\n  '#0000f0', // J - blue\n  '#f0a000', // L - orange\n  '#f0f000', // O - yellow\n  '#00f000', // S - green\n  '#a000f0', // T - purple\n  '#f00000', // Z - red\n];\nconst SHAPES = [\n  null,\n  [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], // I\n  [[2,0,0],[2,2,2],[0,0,0]],                  // J\n  [[0,0,3],[3,3,3],[0,0,0]],                  // L\n  [[4,4],[4,4]],                               // O\n  [[0,5,5],[5,5,0],[0,0,0]],                  // S\n  [[0,6,0],[6,6,6],[0,0,0]],                  // T\n  [[7,7,0],[0,7,7],[0,0,0]],                  // Z\n];\n\nconst board   = document.getElementById('board');\nconst ctx     = board.getContext('2d');\nconst nCanvas = document.getElementById('nextCanvas');\nconst nCtx    = nCanvas.getContext('2d');\n\nlet grid, piece, nextPiece, score, lines, level, dropInterval, lastTime, gameOver, started, animId;\n\nfunction newGrid() {\n  return Array.from({length: ROWS}, () =\u003e new Array(COLS).fill(0));\n}\n\nfunction randomPiece() {\n  const id = Math.floor(Math.random() * 7) + 1;\n  const shape = SHAPES[id].map(r =\u003e [...r]);\n  return { id, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };\n}\n\nfunction rotate(shape) {\n  const N = shape.length;\n  const M = shape[0].length;\n  const out = Array.from({length: M}, () =\u003e new Array(N).fill(0));\n  for (let r = 0; r \u003c N; r++)\n    for (let c = 0; c \u003c M; c++)\n      out[c][N - 1 - r] = shape[r][c];\n  return out;\n}\n\nfunction collides(p, dx=0, dy=0, shape=p.shape) {\n  for (let r = 0; r \u003c shape.length; r++)\n    for (let c = 0; c \u003c shape[r].length; c++)\n      if (shape[r][c]) {\n        const nx = p.x + c + dx, ny = p.y + r + dy;\n        if (nx \u003c 0 || nx \u003e= COLS || ny \u003e= ROWS) return true;\n        if (ny \u003e= 0 \u0026\u0026 grid[ny][nx]) return true;\n      }\n  return false;\n}\n\nfunction lock(p) {\n  for (let r = 0; r \u003c p.shape.length; r++)\n    for (let c = 0; c \u003c p.shape[r].length; c++)\n      if (p.shape[r][c] \u0026\u0026 p.y + r \u003e= 0)\n        grid[p.y + r][p.x + c] = p.id;\n}\n\nfunction clearLines() {\n  let cleared = 0;\n  for (let r = ROWS - 1; r \u003e= 0; r--) {\n    if (grid[r].every(v =\u003e v)) {\n      grid.splice(r, 1);\n      grid.unshift(new Array(COLS).fill(0));\n      cleared++;\n      r++;\n    }\n  }\n  if (cleared) {\n    const pts = [0, 100, 300, 500, 800];\n    score += (pts[cleared] || 800) * level;\n    lines += cleared;\n    level = Math.floor(lines / 10) + 1;\n    dropInterval = Math.max(100, 1000 - (level - 1) * 90);\n    updateHUD();\n  }\n}\n\nfunction updateHUD() {\n  document.getElementById('scoreVal').textContent = score;\n  document.getElementById('levelVal').textContent = level;\n  document.getElementById('linesVal').textContent = lines;\n}\n\nfunction drawCell(c, r, color, context=ctx, size=CELL, ox=0, oy=0) {\n  context.fillStyle = color;\n  context.fillRect(ox + c * size + 1, oy + r * size + 1, size - 2, size - 2);\n  context.fillStyle = 'rgba(255,255,255,0.15)';\n  context.fillRect(ox + c * size + 1, oy + r * size + 1, size - 2, 4);\n  context.fillStyle = 'rgba(0,0,0,0.2)';\n  context.fillRect(ox + c * size + 1, oy + r * size + size - 5, size - 2, 4);\n}\n\nfunction ghostY(p) {\n  let dy = 0;\n  while (!collides(p, 0, dy + 1)) dy++;\n  return p.y + dy;\n}\n\nfunction draw() {\n  ctx.fillStyle = '#0d0d1a';\n  ctx.fillRect(0, 0, board.width, board.height);\n\n  // grid lines\n  ctx.strokeStyle = 'rgba(255,255,255,0.04)';\n  ctx.lineWidth = 1;\n  for (let c = 0; c \u003c= COLS; c++) { ctx.beginPath(); ctx.moveTo(c*CELL,0); ctx.lineTo(c*CELL,board.height); ctx.stroke(); }\n  for (let r = 0; r \u003c= ROWS; r++) { ctx.beginPath(); ctx.moveTo(0,r*CELL); ctx.lineTo(board.width,r*CELL); ctx.stroke(); }\n\n  // locked cells\n  for (let r = 0; r \u003c ROWS; r++)\n    for (let c = 0; c \u003c COLS; c++)\n      if (grid[r][c]) drawCell(c, r, COLORS[grid[r][c]]);\n\n  if (piece) {\n    // ghost\n    const gy = ghostY(piece);\n    if (gy !== piece.y) {\n      for (let r = 0; r \u003c piece.shape.length; r++)\n        for (let c = 0; c \u003c piece.shape[r].length; c++)\n          if (piece.shape[r][c]) {\n            ctx.fillStyle = 'rgba(255,255,255,0.12)';\n            ctx.fillRect((piece.x+c)*CELL+1, (gy+r)*CELL+1, CELL-2, CELL-2);\n          }\n    }\n    // active piece\n    for (let r = 0; r \u003c piece.shape.length; r++)\n      for (let c = 0; c \u003c piece.shape[r].length; c++)\n        if (piece.shape[r][c]) drawCell(piece.x+c, piece.y+r, COLORS[piece.id]);\n  }\n}\n\nfunction drawNext() {\n  nCtx.fillStyle = '#16213e';\n  nCtx.fillRect(0, 0, 80, 80);\n  if (!nextPiece) return;\n  const s = nextPiece.shape;\n  const size = 16;\n  const ox = Math.floor((80 - s[0].length * size) / 2);\n  const oy = Math.floor((80 - s.length * size) / 2);\n  for (let r = 0; r \u003c s.length; r++)\n    for (let c = 0; c \u003c s[r].length; c++)\n      if (s[r][c]) drawCell(c, r, COLORS[nextPiece.id], nCtx, size, ox, oy);\n}\n\nfunction spawn() {\n  piece = nextPiece || randomPiece();\n  nextPiece = randomPiece();\n  drawNext();\n  if (collides(piece)) {\n    gameOver = true;\n    cancelAnimationFrame(animId);\n    const ov = document.getElementById('overlay');\n    ov.innerHTML = '\u003ch2\u003eGAME OVER\u003c/h2\u003e\u003cp\u003eScore: ' + score + '\u003c/p\u003e\u003cp style=\"margin-top:8px\"\u003ePress any key to restart\u003c/p\u003e';\n    ov.style.display = 'flex';\n  }\n}\n\nfunction initGame() {\n  grid = newGrid();\n  score = 0; lines = 0; level = 1; dropInterval = 1000;\n  lastTime = 0; gameOver = false;\n  piece = null; nextPiece = null;\n  updateHUD();\n  spawn();\n}\n\nlet dropAccum = 0;\n\nfunction loop(ts) {\n  if (gameOver) return;\n  const dt = ts - lastTime;\n  lastTime = ts;\n  dropAccum += dt;\n  if (dropAccum \u003e= dropInterval) {\n    dropAccum = 0;\n    if (!collides(piece, 0, 1)) {\n      piece.y++;\n    } else {\n      lock(piece);\n      clearLines();\n      spawn();\n    }\n  }\n  draw();\n  animId = requestAnimationFrame(loop);\n}\n\nfunction startGame() {\n  document.getElementById('overlay').style.display = 'none';\n  initGame();\n  lastTime = performance.now();\n  animId = requestAnimationFrame(loop);\n}\n\ndocument.addEventListener('keydown', e =\u003e {\n  if (!started || gameOver) {\n    if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key) || e.key.length === 1) {\n      started = true;\n      startGame();\n    }\n    return;\n  }\n  if (!piece) return;\n  switch (e.key) {\n    case 'ArrowLeft':\n      if (!collides(piece, -1, 0)) piece.x--;\n      break;\n    case 'ArrowRight':\n      if (!collides(piece, 1, 0)) piece.x++;\n      break;\n    case 'ArrowDown':\n      if (!collides(piece, 0, 1)) { piece.y++; score++; updateHUD(); }\n      else { lock(piece); clearLines(); spawn(); }\n      dropAccum = 0;\n      break;\n    case 'ArrowUp': {\n      const rot = rotate(piece.shape);\n      if (!collides(piece, 0, 0, rot)) { piece.shape = rot; break; }\n      if (!collides(piece, 1, 0, rot)) { piece.shape = rot; piece.x++; break; }\n      if (!collides(piece, -1, 0, rot)) { piece.shape = rot; piece.x--; break; }\n      break;\n    }\n    case ' ':\n      e.preventDefault();\n      while (!collides(piece, 0, 1)) { piece.y++; score += 2; }\n      updateHUD();\n      lock(piece); clearLines(); spawn();\n      dropAccum = 0;\n      break;\n  }\n  draw();\n});\n\n// show start overlay\ndocument.getElementById('overlay').style.display = 'flex';\nstarted = false;\ndraw();\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003ccanvas\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003ccanvas\""
+                }
+              },
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)keydown|ArrowLeft|keyCode/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)keydown|ArrowLeft|keyCode/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.10321590000000001,
+            "num_turns": 1,
+            "duration": 50095000000
+          }
+        ],
+        "saved_to": "out/tetris/tetris.html"
+      },
+      {
+        "name": "pause",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n\u003cmeta charset=\"UTF-8\"\u003e\n\u003ctitle\u003eTetris\u003c/title\u003e\n\u003cstyle\u003e\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n  body {\n    background: #1a1a2e;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 100vh;\n    font-family: 'Courier New', monospace;\n    color: #eee;\n  }\n  #wrapper {\n    display: flex;\n    gap: 24px;\n    align-items: flex-start;\n  }\n  canvas {\n    border: 2px solid #444;\n    display: block;\n  }\n  #sidebar {\n    width: 120px;\n    display: flex;\n    flex-direction: column;\n    gap: 20px;\n  }\n  .panel {\n    background: #16213e;\n    border: 1px solid #444;\n    padding: 12px;\n    border-radius: 4px;\n  }\n  .panel h3 {\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 1px;\n    color: #888;\n    margin-bottom: 8px;\n  }\n  .panel .value {\n    font-size: 22px;\n    font-weight: bold;\n    color: #e0e0e0;\n  }\n  #nextCanvas {\n    display: block;\n    margin: 0 auto;\n  }\n  #status {\n    font-size: 12px;\n    color: #aaa;\n    line-height: 1.6;\n  }\n  #overlay, #pauseOverlay {\n    position: absolute;\n    top: 0; left: 0; right: 0; bottom: 0;\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    background: rgba(0,0,0,0.75);\n    z-index: 10;\n  }\n  #overlay h2, #pauseOverlay h2 { font-size: 28px; margin-bottom: 12px; color: #fff; }\n  #overlay p, #pauseOverlay p  { font-size: 14px; color: #aaa; }\n  #canvasWrap { position: relative; }\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003cdiv id=\"wrapper\"\u003e\n  \u003cdiv id=\"canvasWrap\"\u003e\n    \u003ccanvas id=\"board\" width=\"300\" height=\"600\"\u003e\u003c/canvas\u003e\n    \u003cdiv id=\"overlay\"\u003e\n      \u003ch2\u003eTETRIS\u003c/h2\u003e\n      \u003cp\u003ePress any key to start\u003c/p\u003e\n    \u003c/div\u003e\n    \u003cdiv id=\"pauseOverlay\" style=\"display:none\"\u003e\n      \u003ch2\u003ePAUSED\u003c/h2\u003e\n      \u003cp\u003ePress P to resume\u003c/p\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n  \u003cdiv id=\"sidebar\"\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eScore\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"scoreVal\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLevel\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"levelVal\"\u003e1\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eLines\u003c/h3\u003e\n      \u003cdiv class=\"value\" id=\"linesVal\"\u003e0\u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003ch3\u003eNext\u003c/h3\u003e\n      \u003ccanvas id=\"nextCanvas\" width=\"80\" height=\"80\"\u003e\u003c/canvas\u003e\n    \u003c/div\u003e\n    \u003cdiv class=\"panel\"\u003e\n      \u003cdiv id=\"status\"\u003e← → Move\u003cbr\u003e↑ Rotate\u003cbr\u003e↓ Soft drop\u003cbr\u003eSpace Hard drop\u003cbr\u003eP Pause\u003c/div\u003e\n    \u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e\n\u003cscript\u003e\nconst COLS = 10, ROWS = 20, CELL = 30;\nconst COLORS = [\n  null,\n  '#00f0f0', // I - cyan\n  '#0000f0', // J - blue\n  '#f0a000', // L - orange\n  '#f0f000', // O - yellow\n  '#00f000', // S - green\n  '#a000f0', // T - purple\n  '#f00000', // Z - red\n];\nconst SHAPES = [\n  null,\n  [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], // I\n  [[2,0,0],[2,2,2],[0,0,0]],                  // J\n  [[0,0,3],[3,3,3],[0,0,0]],                  // L\n  [[4,4],[4,4]],                               // O\n  [[0,5,5],[5,5,0],[0,0,0]],                  // S\n  [[0,6,0],[6,6,6],[0,0,0]],                  // T\n  [[7,7,0],[0,7,7],[0,0,0]],                  // Z\n];\n\nconst board   = document.getElementById('board');\nconst ctx     = board.getContext('2d');\nconst nCanvas = document.getElementById('nextCanvas');\nconst nCtx    = nCanvas.getContext('2d');\n\nlet grid, piece, nextPiece, score, lines, level, dropInterval, lastTime, gameOver, started, animId, paused;\n\nfunction newGrid() {\n  return Array.from({length: ROWS}, () =\u003e new Array(COLS).fill(0));\n}\n\nfunction randomPiece() {\n  const id = Math.floor(Math.random() * 7) + 1;\n  const shape = SHAPES[id].map(r =\u003e [...r]);\n  return { id, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };\n}\n\nfunction rotate(shape) {\n  const N = shape.length;\n  const M = shape[0].length;\n  const out = Array.from({length: M}, () =\u003e new Array(N).fill(0));\n  for (let r = 0; r \u003c N; r++)\n    for (let c = 0; c \u003c M; c++)\n      out[c][N - 1 - r] = shape[r][c];\n  return out;\n}\n\nfunction collides(p, dx=0, dy=0, shape=p.shape) {\n  for (let r = 0; r \u003c shape.length; r++)\n    for (let c = 0; c \u003c shape[r].length; c++)\n      if (shape[r][c]) {\n        const nx = p.x + c + dx, ny = p.y + r + dy;\n        if (nx \u003c 0 || nx \u003e= COLS || ny \u003e= ROWS) return true;\n        if (ny \u003e= 0 \u0026\u0026 grid[ny][nx]) return true;\n      }\n  return false;\n}\n\nfunction lock(p) {\n  for (let r = 0; r \u003c p.shape.length; r++)\n    for (let c = 0; c \u003c p.shape[r].length; c++)\n      if (p.shape[r][c] \u0026\u0026 p.y + r \u003e= 0)\n        grid[p.y + r][p.x + c] = p.id;\n}\n\nfunction clearLines() {\n  let cleared = 0;\n  for (let r = ROWS - 1; r \u003e= 0; r--) {\n    if (grid[r].every(v =\u003e v)) {\n      grid.splice(r, 1);\n      grid.unshift(new Array(COLS).fill(0));\n      cleared++;\n      r++;\n    }\n  }\n  if (cleared) {\n    const pts = [0, 100, 300, 500, 800];\n    score += (pts[cleared] || 800) * level;\n    lines += cleared;\n    level = Math.floor(lines / 10) + 1;\n    dropInterval = Math.max(100, 1000 - (level - 1) * 90);\n    updateHUD();\n  }\n}\n\nfunction updateHUD() {\n  document.getElementById('scoreVal').textContent = score;\n  document.getElementById('levelVal').textContent = level;\n  document.getElementById('linesVal').textContent = lines;\n}\n\nfunction drawCell(c, r, color, context=ctx, size=CELL, ox=0, oy=0) {\n  context.fillStyle = color;\n  context.fillRect(ox + c * size + 1, oy + r * size + 1, size - 2, size - 2);\n  context.fillStyle = 'rgba(255,255,255,0.15)';\n  context.fillRect(ox + c * size + 1, oy + r * size + 1, size - 2, 4);\n  context.fillStyle = 'rgba(0,0,0,0.2)';\n  context.fillRect(ox + c * size + 1, oy + r * size + size - 5, size - 2, 4);\n}\n\nfunction ghostY(p) {\n  let dy = 0;\n  while (!collides(p, 0, dy + 1)) dy++;\n  return p.y + dy;\n}\n\nfunction draw() {\n  ctx.fillStyle = '#0d0d1a';\n  ctx.fillRect(0, 0, board.width, board.height);\n\n  // grid lines\n  ctx.strokeStyle = 'rgba(255,255,255,0.04)';\n  ctx.lineWidth = 1;\n  for (let c = 0; c \u003c= COLS; c++) { ctx.beginPath(); ctx.moveTo(c*CELL,0); ctx.lineTo(c*CELL,board.height); ctx.stroke(); }\n  for (let r = 0; r \u003c= ROWS; r++) { ctx.beginPath(); ctx.moveTo(0,r*CELL); ctx.lineTo(board.width,r*CELL); ctx.stroke(); }\n\n  // locked cells\n  for (let r = 0; r \u003c ROWS; r++)\n    for (let c = 0; c \u003c COLS; c++)\n      if (grid[r][c]) drawCell(c, r, COLORS[grid[r][c]]);\n\n  if (piece) {\n    // ghost\n    const gy = ghostY(piece);\n    if (gy !== piece.y) {\n      for (let r = 0; r \u003c piece.shape.length; r++)\n        for (let c = 0; c \u003c piece.shape[r].length; c++)\n          if (piece.shape[r][c]) {\n            ctx.fillStyle = 'rgba(255,255,255,0.12)';\n            ctx.fillRect((piece.x+c)*CELL+1, (gy+r)*CELL+1, CELL-2, CELL-2);\n          }\n    }\n    // active piece\n    for (let r = 0; r \u003c piece.shape.length; r++)\n      for (let c = 0; c \u003c piece.shape[r].length; c++)\n        if (piece.shape[r][c]) drawCell(piece.x+c, piece.y+r, COLORS[piece.id]);\n  }\n}\n\nfunction drawNext() {\n  nCtx.fillStyle = '#16213e';\n  nCtx.fillRect(0, 0, 80, 80);\n  if (!nextPiece) return;\n  const s = nextPiece.shape;\n  const size = 16;\n  const ox = Math.floor((80 - s[0].length * size) / 2);\n  const oy = Math.floor((80 - s.length * size) / 2);\n  for (let r = 0; r \u003c s.length; r++)\n    for (let c = 0; c \u003c s[r].length; c++)\n      if (s[r][c]) drawCell(c, r, COLORS[nextPiece.id], nCtx, size, ox, oy);\n}\n\nfunction spawn() {\n  piece = nextPiece || randomPiece();\n  nextPiece = randomPiece();\n  drawNext();\n  if (collides(piece)) {\n    gameOver = true;\n    cancelAnimationFrame(animId);\n    const ov = document.getElementById('overlay');\n    ov.innerHTML = '\u003ch2\u003eGAME OVER\u003c/h2\u003e\u003cp\u003eScore: ' + score + '\u003c/p\u003e\u003cp style=\"margin-top:8px\"\u003ePress any key to restart\u003c/p\u003e';\n    ov.style.display = 'flex';\n  }\n}\n\nfunction initGame() {\n  grid = newGrid();\n  score = 0; lines = 0; level = 1; dropInterval = 1000;\n  lastTime = 0; gameOver = false; paused = false;\n  piece = null; nextPiece = null;\n  document.getElementById('pauseOverlay').style.display = 'none';\n  updateHUD();\n  spawn();\n}\n\nlet dropAccum = 0;\n\nfunction loop(ts) {\n  if (gameOver) return;\n  const dt = ts - lastTime;\n  lastTime = ts;\n  dropAccum += dt;\n  if (dropAccum \u003e= dropInterval) {\n    dropAccum = 0;\n    if (!collides(piece, 0, 1)) {\n      piece.y++;\n    } else {\n      lock(piece);\n      clearLines();\n      spawn();\n    }\n  }\n  draw();\n  animId = requestAnimationFrame(loop);\n}\n\nfunction startGame() {\n  document.getElementById('overlay').style.display = 'none';\n  initGame();\n  lastTime = performance.now();\n  animId = requestAnimationFrame(loop);\n}\n\ndocument.addEventListener('keydown', e =\u003e {\n  if (!started || gameOver) {\n    if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key) || e.key.length === 1) {\n      started = true;\n      startGame();\n    }\n    return;\n  }\n\n  if (e.key === 'p' || e.key === 'P') {\n    paused = !paused;\n    if (paused) {\n      cancelAnimationFrame(animId);\n      document.getElementById('pauseOverlay').style.display = 'flex';\n    } else {\n      document.getElementById('pauseOverlay').style.display = 'none';\n      lastTime = performance.now();\n      dropAccum = 0;\n      animId = requestAnimationFrame(loop);\n    }\n    return;\n  }\n\n  if (paused || !piece) return;\n\n  switch (e.key) {\n    case 'ArrowLeft':\n      if (!collides(piece, -1, 0)) piece.x--;\n      break;\n    case 'ArrowRight':\n      if (!collides(piece, 1, 0)) piece.x++;\n      break;\n    case 'ArrowDown':\n      if (!collides(piece, 0, 1)) { piece.y++; score++; updateHUD(); }\n      else { lock(piece); clearLines(); spawn(); }\n      dropAccum = 0;\n      break;\n    case 'ArrowUp': {\n      const rot = rotate(piece.shape);\n      if (!collides(piece, 0, 0, rot)) { piece.shape = rot; break; }\n      if (!collides(piece, 1, 0, rot)) { piece.shape = rot; piece.x++; break; }\n      if (!collides(piece, -1, 0, rot)) { piece.shape = rot; piece.x--; break; }\n      break;\n    }\n    case ' ':\n      e.preventDefault();\n      while (!collides(piece, 0, 1)) { piece.y++; score += 2; }\n      updateHUD();\n      lock(piece); clearLines(); spawn();\n      dropAccum = 0;\n      break;\n  }\n  draw();\n});\n\n// show start overlay\ndocument.getElementById('overlay').style.display = 'flex';\nstarted = false;\ndraw();\n\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003ccanvas\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003ccanvas\""
+                }
+              },
+              {
+                "scorer": "judge: The HTML implements a working pause toggle bound to the 'p' key that stops and resumes the Tetris game loop.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.1454599,
+            "num_turns": 1,
+            "duration": 64014000000
+          }
+        ],
+        "saved_to": "out/tetris/tetris.html"
+      }
+    ],
+    "cost_usd": 0.2486758,
+    "num_turns": 2,
+    "duration": 114109000000
+  },
+  {
+    "name": "translate-fr",
+    "tags": [
+      "qa",
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "Bonjour, comment allez-vous ?",
+            "scores": [
+              {
+                "scorer": "regex /(?i)bonjour|bonne/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)bonjour|bonne/"
+                }
+              },
+              {
+                "scorer": "judge: The output is a fluent, grammatically correct French translation of \"Good morning, how are you?\" and contains no English.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.016570400000000002,
+            "num_turns": 1,
+            "duration": 4254000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.016570400000000002,
+    "num_turns": 1,
+    "duration": 4254000000
+  },
+  {
+    "name": "unit-convert",
+    "tags": [
+      "qa"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "16.1",
+            "scores": [
+              {
+                "scorer": "regex /\\b16\\.1\\b/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\b16\\.1\\b/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.016258400000000003,
+            "num_turns": 1,
+            "duration": 2195000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.016258400000000003,
+    "num_turns": 1,
+    "duration": 2195000000
+  },
+  {
+    "name": "word-problem",
+    "tags": [
+      "reasoning"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "phase-1",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "150",
+            "scores": [
+              {
+                "scorer": "regex /\\b150\\b/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\b150\\b/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0161724,
+            "num_turns": 1,
+            "duration": 2114000000
+          }
+        ]
+      }
+    ],
+    "cost_usd": 0.0161724,
+    "num_turns": 1,
+    "duration": 2114000000
+  }
+]

@@ -1,0 +1,141 @@
+[
+  {
+    "name": "sql-schema-and-seed",
+    "tags": [
+      "multi-file",
+      "project",
+      "sql",
+      "data",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "schema",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```sql\nCREATE TABLE authors (\n    id INTEGER PRIMARY KEY,\n    name TEXT NOT NULL,\n    email TEXT\n);\n\nCREATE TABLE posts (\n    id INTEGER PRIMARY KEY,\n    author_id INTEGER,\n    title TEXT NOT NULL,\n    body TEXT,\n    created_at TEXT,\n    FOREIGN KEY (author_id) REFERENCES authors(id)\n);\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)CREATE\\s+TABLE\\s+authors/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)CREATE\\s+TABLE\\s+authors/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)CREATE\\s+TABLE\\s+posts/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)CREATE\\s+TABLE\\s+posts/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)FOREIGN\\s+KEY/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)FOREIGN\\s+KEY/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.09403249999999999,
+            "num_turns": 4,
+            "duration": 12480000000
+          }
+        ],
+        "saved_to": "cases/out/sql-schema-and-seed/schema.sql"
+      },
+      {
+        "name": "seed",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```sql\nINSERT INTO authors (id, name, email) VALUES\n    (1, 'Alice Johnson', 'alice@example.com'),\n    (2, 'Bob Smith', 'bob@example.com');\n\nINSERT INTO posts (id, author_id, title, body, created_at) VALUES\n    (1, 1, 'Getting Started with SQL', 'SQL is a powerful language for managing relational databases.', '2024-01-15'),\n    (2, 1, 'Advanced Query Techniques', 'Joins, subqueries, and window functions unlock the full power of SQL.', '2024-02-20'),\n    (3, 2, 'Database Design Principles', 'Normalization and proper indexing are key to a well-designed schema.', '2024-03-10');\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)INSERT\\s+INTO\\s+authors/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)INSERT\\s+INTO\\s+authors/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)INSERT\\s+INTO\\s+posts/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)INSERT\\s+INTO\\s+posts/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.061171899999999994,
+            "num_turns": 1,
+            "duration": 6172000000
+          }
+        ],
+        "saved_to": "cases/out/sql-schema-and-seed/seed.sql"
+      },
+      {
+        "name": "queries",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```sql\n-- 1. All posts with their author's name\nSELECT posts.id, posts.title, posts.body, posts.created_at, authors.name AS author_name\nFROM posts\nJOIN authors ON posts.author_id = authors.id;\n\n-- 2. Count of posts per author\nSELECT authors.name, COUNT(posts.id) AS post_count\nFROM authors\nLEFT JOIN posts ON authors.id = posts.author_id\nGROUP BY authors.id, authors.name;\n\n-- 3. Most recent post ordered by created_at\nSELECT posts.id, posts.title, posts.body, posts.created_at, authors.name AS author_name\nFROM posts\nJOIN authors ON posts.author_id = authors.id\nORDER BY posts.created_at DESC\nLIMIT 1;\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)SELECT/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)SELECT/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)JOIN/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)JOIN/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)GROUP\\s+BY/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)GROUP\\s+BY/"
+                }
+              },
+              {
+                "scorer": "judge: queries.sql contains valid SQL SELECT statements (including a JOIN of posts and authors and a GROUP BY count per author) consistent with the table and column names defined in the provided schema.sql.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0766617,
+            "num_turns": 2,
+            "duration": 8791000000
+          }
+        ],
+        "saved_to": "cases/out/sql-schema-and-seed/queries.sql"
+      }
+    ],
+    "cost_usd": 0.2318661,
+    "num_turns": 7,
+    "duration": 27443000000
+  }
+]

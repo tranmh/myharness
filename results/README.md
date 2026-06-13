@@ -168,14 +168,31 @@ Fixed by adding the `(?m)` multiline flag (`(?m)^#!/usr/bin/env bash`); the re-r
 then passed. (Lesson: `^`/`$`-anchored regex scorers need `(?m)` because the model
 wraps output in a fenced block and scorers see the fence.)
 
-Generated files live under `cases/out/<case>/` (git-ignored).
+Generated files live under `cases/out/<case>/` and are **committed to the repo**
+as reference output (see below).
+
+## Saved outputs
+
+Every case's outputs are tracked in git as reference examples:
+
+- **Generated files** — `cases/out/<case>/` (44 files from the 10 multi-file
+  cases, plus earlier single-file outputs: `calc/`, `snake/`, `tetris/`,
+  `refactor/`) and `cases/tetris.html` (the `build-tetris` case).
+- **Per-case text outputs** — every case's full model output, per phase/attempt,
+  is in the `*.report.json` files (the `output` fields). `run.report.json` holds
+  the original 24-case real run (covers the text-only QA/code cases); the
+  per-case `<case>.report.json` files hold the 10 multi-file re-runs.
+- **Human-readable logs** — the matching `*.console.txt` files.
+
+Only the mock-provider output (`mock.*`, canned, not real model output) and the
+empty interrupted-batch stub (`multifile.*`) are git-ignored.
 
 ## Files in this directory
 
-- `mock.report.json` / `mock.console.txt` — mock pass output (git-ignored)
-- `run.report.json` / `run.console.txt` — real pass output (git-ignored)
-- `multifile.report.json` / `multifile.console.txt` — interrupted batch multi-file
-  run (git-ignored; report.json was never written because the run was stopped early)
-- `<case>.report.json` / `<case>.console.txt` — per-case re-runs of the 9
-  multi-file cases (git-ignored)
-- `README.md` — this summary (kept in git)
+- `run.report.json` / `run.console.txt` — original 24-case real run (**tracked**)
+- `<case>.report.json` / `<case>.console.txt` — per-case re-runs of the 10
+  multi-file cases (**tracked**)
+- `mock.report.json` / `mock.console.txt` — mock pass output (git-ignored, canned)
+- `multifile.report.json` / `multifile.console.txt` — interrupted batch run stub
+  (git-ignored; report.json was never written because the run was stopped early)
+- `README.md` — this summary (tracked)

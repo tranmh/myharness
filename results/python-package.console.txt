@@ -1,0 +1,72 @@
+running 1 case(s) via claude provider...
+
+PASS  python-package            14.04s  $0.1833  3t  [multi-file,project,python,code]
+    [ok] phase module           1 try  saved:cases/out/python-package/calculator.py
+        attempt 1:
+          [ok] regex /(?m)^\s*class\s+Calculator/ — matched /(?m)^\s*class\s+Calculator/
+          [ok] regex /(?m)def\s+(add|divide)/ — matched /(?m)def\s+(add|divide)/
+          [ok] regex /(?i)ValueError/ — matched /(?i)ValueError/
+          output: ```python
+"""Calculator module providing basic arithmetic operations."""
+
+
+class Calculator:
+    def add(self, a, b):
+        return a + b
+
+    def subtract(self, a, b):
+        return a - b
+
+    def multiply(self, a, b):
+        return a * b
+
+    def divide(self, a, b):
+        …
+    [ok] phase tests            1 try  saved:cases/out/python-package/test_calculator.py
+        attempt 1:
+          [ok] regex /(?i)import\s+pytest/ — matched /(?i)import\s+pytest/
+          [ok] regex /(?i)from\s+calculator\s+import|import\s+calculator/ — matched /(?i)from\s+calculator\s+import|import\s+calculator/
+          [ok] regex /(?i)pytest\.raises/ — matched /(?i)pytest\.raises/
+          output: ```python
+import pytest
+from calculator import Calculator
+
+
+@pytest.fixture
+def calc():
+    return Calculator()
+
+
+def test_add(calc):
+    assert calc.add(2, 3) == 5
+    assert calc.add(-1, 1) == 0
+    assert calc.add(0, 0) == 0
+
+
+def test_subtract(calc):
+    assert calc.subtract(…
+    [ok] phase readme           1 try  saved:cases/out/python-package/README.md
+        attempt 1:
+          [ok] regex /(?m)^#\s+/ — matched /(?m)^#\s+/
+          [ok] regex /(?i)pytest/ — matched /(?i)pytest/
+          [ok] regex /(?i)Calculator/ — matched /(?i)Calculator/
+          output: ```markdown
+# calculator
+
+A simple Python calculator module providing basic arithmetic operations.
+
+## Usage
+
+```python
+from calculator import Calculator
+
+calc = Calculator()
+
+calc.add(2, 3)        # 5
+calc.subtract(5, 3)   # 2
+calc.multiply(3, 4)   # 12
+calc.divide(10, 2)    # 5…
+
+1 passed, 0 failed — total 14.04s, $0.1833
+
+wrote results/python-package.report.json

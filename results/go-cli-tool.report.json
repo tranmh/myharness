@@ -1,0 +1,173 @@
+[
+  {
+    "name": "go-cli-tool",
+    "tags": [
+      "multi-file",
+      "project",
+      "go",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "mod",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```go\nmodule example.com/greet\n\ngo 1.22\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^module\\s+example\\.com/greet/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^module\\s+example\\.com/greet/"
+                }
+              },
+              {
+                "scorer": "regex /(?m)^go\\s+1\\./",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^go\\s+1\\./"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0570679,
+            "num_turns": 1,
+            "duration": 2176000000
+          }
+        ],
+        "saved_to": "cases/out/go-cli-tool/go.mod"
+      },
+      {
+        "name": "greet",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```go\npackage main\n\nfunc Greet(name string) string {\n\tif name == \"\" {\n\t\treturn \"Hello, World!\"\n\t}\n\treturn \"Hello, \" + name + \"!\"\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^package\\s+main/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^package\\s+main/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)func\\s+Greet\\s*\\(\\s*name\\s+string\\s*\\)\\s*string/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)func\\s+Greet\\s*\\(\\s*name\\s+string\\s*\\)\\s*string/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0584119,
+            "num_turns": 1,
+            "duration": 3375000000
+          }
+        ],
+        "saved_to": "cases/out/go-cli-tool/greet.go"
+      },
+      {
+        "name": "main",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```go\npackage main\n\nimport (\n\t\"fmt\"\n\t\"os\"\n)\n\nfunc main() {\n\tname := \"\"\n\tif len(os.Args) \u003e 1 {\n\t\tname = os.Args[1]\n\t}\n\tfmt.Println(Greet(name))\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^package\\s+main/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^package\\s+main/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)func\\s+main\\s*\\(/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)func\\s+main\\s*\\(/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)Greet\\s*\\(/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)Greet\\s*\\(/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0583969,
+            "num_turns": 1,
+            "duration": 3182000000
+          }
+        ],
+        "saved_to": "cases/out/go-cli-tool/main.go"
+      },
+      {
+        "name": "test",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```go\npackage main\n\nimport \"testing\"\n\nfunc TestGreet(t *testing.T) {\n\tif got := Greet(\"Ada\"); got != \"Hello, Ada!\" {\n\t\tt.Errorf(\"Greet(\\\"Ada\\\") = %q, want \\\"Hello, Ada!\\\"\", got)\n\t}\n\tif got := Greet(\"\"); got != \"Hello, World!\" {\n\t\tt.Errorf(\"Greet(\\\"\\\") = %q, want \\\"Hello, World!\\\"\", got)\n\t}\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^package\\s+main/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^package\\s+main/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)import\\s+\"testing\"|\"testing\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s+\"testing\"|\"testing\"/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)func\\s+Test\\w*\\s*\\(\\s*t\\s+\\*testing\\.T/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)func\\s+Test\\w*\\s*\\(\\s*t\\s+\\*testing\\.T/"
+                }
+              },
+              {
+                "scorer": "judge: greet_test.go is a valid Go test in package main that exercises Greet for both a named and an empty input and asserts the expected greeting strings.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0592119,
+            "num_turns": 1,
+            "duration": 3250000000
+          }
+        ],
+        "saved_to": "cases/out/go-cli-tool/greet_test.go"
+      }
+    ],
+    "cost_usd": 0.23308859999999998,
+    "num_turns": 4,
+    "duration": 11983000000
+  }
+]

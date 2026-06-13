@@ -1,0 +1,406 @@
+[
+  {
+    "name": "full-snake-game-project",
+    "tags": [
+      "multi-file",
+      "project",
+      "game",
+      "html",
+      "web",
+      "code",
+      "judge"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "html",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n  \u003cmeta charset=\"UTF-8\"\u003e\n  \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e\n  \u003ctitle\u003eSnake\u003c/title\u003e\n  \u003clink rel=\"stylesheet\" href=\"styles.css\"\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n  \u003cdiv id=\"game-container\"\u003e\n    \u003cdiv id=\"score-display\"\u003eScore: \u003cspan id=\"score\"\u003e0\u003c/span\u003e\u003c/div\u003e\n    \u003ccanvas id=\"board\" width=\"400\" height=\"400\"\u003e\u003c/canvas\u003e\n  \u003c/div\u003e\n  \u003cscript type=\"module\" src=\"main.js\"\u003e\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)id=[\"']board[\"']/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)id=[\"']board[\"']/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)type=[\"']module[\"']/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)type=[\"']module[\"']/"
+                }
+              },
+              {
+                "scorer": "contains \"main.js\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"main.js\""
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0597719,
+            "num_turns": 1,
+            "duration": 4849000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/index.html"
+      },
+      {
+        "name": "css",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```css\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  background-color: #1a1a2e;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  font-family: monospace;\n}\n\n#game-container {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n}\n\n#score-display {\n  color: #e0e0e0;\n  font-size: 1.2rem;\n  letter-spacing: 0.05em;\n}\n\n#score {\n  color: #4ade80;\n  font-size: 1.4rem;\n  font-weight: bold;\n}\n\n#board {\n  border: 3px solid #4ade80;\n  background-color: #0f0f1a;\n  display: block;\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)#board/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)#board/"
+                }
+              },
+              {
+                "scorer": "regex /\\{[^}]*:[^}]*\\}/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\{[^}]*:[^}]*\\}/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0631899,
+            "num_turns": 1,
+            "duration": 5436000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/styles.css"
+      },
+      {
+        "name": "constants",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "The file already has the correct content. Here it is:\n\n```js\nexport const CELL_SIZE = 20;\nexport const GRID_SIZE = 20;\nexport const TICK_MS = 120;\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)export\\s+const\\s+CELL_SIZE/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+const\\s+CELL_SIZE/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)export\\s+const\\s+GRID_SIZE/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+const\\s+GRID_SIZE/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.09111369999999999,
+            "num_turns": 4,
+            "duration": 10042000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/constants.js"
+      },
+      {
+        "name": "board",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { CELL_SIZE, GRID_SIZE } from './constants.js';\n\nexport function clearBoard(ctx) {\n    ctx.clearRect(0, 0, GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE);\n}\n\nexport function drawCell(ctx, x, y, color) {\n    ctx.fillStyle = color;\n    ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)import\\s*\\{[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s*\\{[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)export\\s+function\\s+drawCell/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+function\\s+drawCell/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0598969,
+            "num_turns": 1,
+            "duration": 3615000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/board.js"
+      },
+      {
+        "name": "snake",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { GRID_SIZE } from './constants.js';\n\nexport class Snake {\n  constructor() {\n    this.body = [\n      { x: 10, y: 10 },\n      { x: 9, y: 10 },\n      { x: 8, y: 10 },\n    ];\n    this.direction = { x: 1, y: 0 };\n    this._pendingGrow = false;\n  }\n\n  setDirection(dir) {\n    if (dir.x === -this.direction.x \u0026\u0026 dir.y === -this.direction.y) return;\n    this.direction = dir;\n  }\n\n  head() {\n    return this.body[0];\n  }\n\n  move() {\n    const h = this.head();\n    const next = {\n      x: (h.x + this.direction.x + GRID_SIZE) % GRID_SIZE,\n      y: (h.y + this.direction.y + GRID_SIZE) % GRID_SIZE,\n    };\n    this.body.unshift(next);\n    if (this._pendingGrow) {\n      this._pendingGrow = false;\n    } else {\n      this.body.pop();\n    }\n  }\n\n  grow() {\n    this._pendingGrow = true;\n  }\n\n  collidesWithSelf() {\n    const h = this.head();\n    return this.body.slice(1).some(seg =\u003e seg.x === h.x \u0026\u0026 seg.y === h.y);\n  }\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)export\\s+class\\s+Snake/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+class\\s+Snake/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)setDirection|move\\s*\\(/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)setDirection|move\\s*\\(/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0639069,
+            "num_turns": 1,
+            "duration": 7003000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/snake.js"
+      },
+      {
+        "name": "food",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { GRID_SIZE } from './constants.js';\n\nexport function spawnFood(snake) {\n  let pos;\n  do {\n    pos = {\n      x: Math.floor(Math.random() * GRID_SIZE),\n      y: Math.floor(Math.random() * GRID_SIZE),\n    };\n  } while (snake.body.some(seg =\u003e seg.x === pos.x \u0026\u0026 seg.y === pos.y));\n  return pos;\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)import\\s*\\{[^}]*GRID_SIZE[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s*\\{[^}]*GRID_SIZE[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)export\\s+function\\s+spawnFood/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+function\\s+spawnFood/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0624589,
+            "num_turns": 1,
+            "duration": 3302000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/food.js"
+      },
+      {
+        "name": "input",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { Snake } from './snake.js';\n\nconst KEY_MAP = {\n  ArrowUp:    { x: 0, y: -1 },\n  ArrowDown:  { x: 0, y:  1 },\n  ArrowLeft:  { x: -1, y: 0 },\n  ArrowRight: { x:  1, y: 0 },\n  w:          { x: 0, y: -1 },\n  s:          { x: 0, y:  1 },\n  a:          { x: -1, y: 0 },\n  d:          { x:  1, y: 0 },\n};\n\nexport function attachInput(snake) {\n  window.addEventListener('keydown', (e) =\u003e {\n    const dir = KEY_MAP[e.key];\n    if (!dir) return;\n    e.preventDefault();\n    snake.setDirection(dir);\n  });\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)export\\s+function\\s+attachInput/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+function\\s+attachInput/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)addEventListener\\(['\"]keydown['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)addEventListener\\(['\"]keydown['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)setDirection/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)setDirection/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0632549,
+            "num_turns": 1,
+            "duration": 4306000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/input.js"
+      },
+      {
+        "name": "game",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { TICK_MS } from './constants.js';\nimport { clearBoard, drawCell } from './board.js';\nimport { Snake } from './snake.js';\nimport { spawnFood } from './food.js';\n\nexport class Game {\n  constructor(ctx) {\n    this.ctx = ctx;\n    this.snake = new Snake();\n    this.food = spawnFood(this.snake);\n    this.score = 0;\n    this.running = false;\n    this._timerId = null;\n  }\n\n  start() {\n    this.running = true;\n    this._timerId = setInterval(() =\u003e this._tick(), TICK_MS);\n  }\n\n  stop() {\n    this.running = false;\n    clearInterval(this._timerId);\n    this._timerId = null;\n  }\n\n  setDirection(dir) {\n    this.snake.setDirection(dir);\n  }\n\n  _tick() {\n    this.snake.move();\n\n    if (this.snake.collidesWithSelf()) {\n      this.stop();\n      this._draw();\n      return;\n    }\n\n    const head = this.snake.head();\n    if (head.x === this.food.x \u0026\u0026 head.y === this.food.y) {\n      this.snake.grow();\n      this.score += 1;\n      this.food = spawnFood(this.snake);\n    }\n\n    this._draw();\n  }\n\n  _draw() {\n    clearBoard(this.ctx);\n    for (const seg of this.snake.body) {\n      drawCell(this.ctx, seg.x, seg.y, '#4caf50');\n    }\n    drawCell(this.ctx, this.food.x, this.food.y, '#f44336');\n  }\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)import\\s.*from\\s*['\"]\\./snake\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s.*from\\s*['\"]\\./snake\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)import\\s.*from\\s*['\"]\\./food\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s.*from\\s*['\"]\\./food\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)export\\s+(class\\s+Game|function|const)/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)export\\s+(class\\s+Game|function|const)/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0841289,
+            "num_turns": 1,
+            "duration": 19467000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/game.js"
+      },
+      {
+        "name": "main",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nimport { Game } from './game.js';\nimport { attachInput } from './input.js';\n\nconst canvas = document.getElementById('board');\nconst ctx = canvas.getContext('2d');\nconst scoreEl = document.getElementById('score');\n\nconst game = new Game(ctx);\n\ngame.onScoreChange = (score) =\u003e {\n  scoreEl.textContent = score;\n};\n\nattachInput(game);\n\ngame.start();\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)getElementById\\(['\"]board['\"]\\)|querySelector\\(['\"]#board['\"]\\)/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)getElementById\\(['\"]board['\"]\\)|querySelector\\(['\"]#board['\"]\\)/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)import\\s.*from\\s*['\"]\\./game\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s.*from\\s*['\"]\\./game\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)import\\s.*from\\s*['\"]\\./input\\.js['\"]/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)import\\s.*from\\s*['\"]\\./input\\.js['\"]/"
+                }
+              },
+              {
+                "scorer": "judge: main.js is a valid ES-module entry point that obtains the #board canvas context and #score element from the provided index.html, imports and starts the Game from game.js, wires attachInput from input.js, and starts the loop, consistent with the exported names of those modules.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.06486789999999999,
+            "num_turns": 1,
+            "duration": 3218000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/main.js"
+      },
+      {
+        "name": "readme",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```markdown\n# Snake\n\nA classic Snake game built with vanilla JavaScript ES modules and an HTML5 Canvas.\n\n## Source Files\n\n| File | Description |\n|------|-------------|\n| `index.html` | Entry point — sets up the page, score display, and canvas element |\n| `styles.css` | Layout and visual styling |\n| `main.js` | Bootstraps the game; imports all modules and starts the loop |\n| `game.js` | Core game loop — manages state, timing, and win/lose logic |\n| `snake.js` | Snake entity — position, movement, growth, and collision detection |\n| `food.js` | Food entity — random placement and respawn logic |\n| `board.js` | Canvas rendering — draws the grid, snake, and food each frame |\n| `input.js` | Keyboard event handling — maps arrow/WASD keys to direction changes |\n| `constants.js` | Shared configuration values (grid size, speed, colors, etc.) |\n\n## Controls\n\n| Key | Action |\n|-----|--------|\n| Arrow Up / W | Move up |\n| Arrow Down / S | Move down |\n| Arrow Left / A | Move left |\n| Arrow Right / D | Move right |\n\n## How to Run\n\nBecause `main.js` uses ES modules (`type=\"module\"`), the game **must be served over HTTP** — browsers block module imports on `file://` URLs.\n\nAny static file server works:\n\n```sh\n# Python 3\npython3 -m http.server 8080\n\n# Node.js (npx)\nnpx serve .\n\n# Node.js (http-server)\nnpx http-server .\n```\n\nThen open `http://localhost:8080` in your browser.\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^#\\s+/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^#\\s+/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)module|http/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)module|http/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)snake/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)snake/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0655279,
+            "num_turns": 1,
+            "duration": 9131000000
+          }
+        ],
+        "saved_to": "cases/out/full-snake-game-project/README.md"
+      }
+    ],
+    "cost_usd": 0.6781178,
+    "num_turns": 13,
+    "duration": 70369000000
+  }
+]

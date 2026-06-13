@@ -1,0 +1,82 @@
+running 1 case(s) via claude provider...
+
+PASS  react-counter-spa         23.50s  $0.2514  4t  [multi-file,project,html,web,react,code]
+    [ok] phase html             1 try  saved:cases/out/react-counter-spa/index.html
+        attempt 1:
+          [ok] contains "<!DOCTYPE html" — found "<!DOCTYPE html"
+          [ok] regex /(?i)id=["']root["']/ — matched /(?i)id=["']root["']/
+          [ok] regex /(?i)text/babel/ — matched /(?i)text/babel/
+          [ok] contains "app.jsx" — found "app.jsx"
+          output: ```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Counter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/react@18…
+    [ok] phase app              1 try  saved:cases/out/react-counter-spa/app.jsx
+        attempt 1:
+          [ok] regex /(?i)useState/ — matched /(?i)useState/
+          [ok] regex /(?i)ReactDOM/ — matched /(?i)ReactDOM/
+          [ok] regex /(?i)['"]?#?root['"]?/ — matched /(?i)['"]?#?root['"]?/
+          output: ```jsx
+function Counter() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div className="counter">
+      <h1>Counter</h1>
+      <p className="count">{count}</p>
+      <div className="buttons">
+        <button onClick={() => setCount(count - 1)}>Decrement</button…
+    [ok] phase css              1 try  saved:cases/out/react-counter-spa/styles.css
+        attempt 1:
+          [ok] regex /\{[^}]*:[^}]*\}/ — matched /\{[^}]*:[^}]*\}/
+          [ok] regex /(?i)button/ — matched /(?i)button/
+          output: ```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  font-family: sans-serif;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  ali…
+    [ok] phase readme           1 try  saved:cases/out/react-counter-spa/README.md
+        attempt 1:
+          [ok] regex /(?m)^#\s+/ — matched /(?m)^#\s+/
+          [ok] regex /(?i)index\.html/ — matched /(?i)index\.html/
+          [ok] judge: README.md describes a no-build CDN-based React counter app and gives correct instructions for opening or serving index.html without an npm build step. — judge: PASS
+          output: ```markdown
+# React Counter
+
+A minimal counter app built with React 18, loaded directly from CDN — no npm install, no build step required.
+
+## Running
+
+**Option A — open directly in browser:**
+
+```
+open index.html
+```
+
+Or just double-click `index.html` in your file manager.
+
+…
+
+1 passed, 0 failed — total 23.50s, $0.2514
+
+wrote results/react-counter-spa.report.json

@@ -1,0 +1,62 @@
+running 1 case(s) via claude provider...
+
+PASS  static-landing-page       35.48s  $0.2290  3t  [multi-file,project,html,css,web,code]
+    [ok] phase html             1 try  saved:cases/out/static-landing-page/index.html
+        attempt 1:
+          [ok] contains "<!DOCTYPE html" — found "<!DOCTYPE html"
+          [ok] contains "styles.css" — found "styles.css"
+          [ok] contains "app.js" — found "app.js"
+          [ok] regex /(?i)id=["']cta["']/ — matched /(?i)id=["']cta["']/
+          output: ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productly — Build faster, ship smarter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <d…
+    [ok] phase css              1 try  saved:cases/out/static-landing-page/styles.css
+        attempt 1:
+          [ok] regex /(?i)#cta/ — matched /(?i)#cta/
+          [ok] regex /(?i)(flex|grid)/ — matched /(?i)(flex|grid)/
+          [ok] regex /\{[^}]*:[^}]*\}/ — matched /\{[^}]*:[^}]*\}/
+          output: ```css
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --brand: #4f46e5;
+  --brand-dark: #3730a3;
+  --text: #111827;
+  --muted: #6b7280;
+  --bg: #ffffff;
+  --surface: #f9fafb;
+  --border: #e5e7eb;
+  --radius: 12px;
+}
+
+html {
+  scroll-beh…
+    [ok] phase js               1 try  saved:cases/out/static-landing-page/app.js
+        attempt 1:
+          [ok] regex /(?i)getElementById\(['"]cta['"]\)|querySelector\(['"]#cta['"]\)/ — matched /(?i)getElementById\(['"]cta['"]\)|querySelector\(['"]#cta['"]\)/
+          [ok] regex /(?i)addEventListener/ — matched /(?i)addEventListener/
+          [ok] judge: app.js is valid vanilla JavaScript that wires a click handler to the #cta element defined in the provided index.html, without relying on any framework. — judge: PASS
+          output: ```js
+document.getElementById('cta').addEventListener('click', function () {
+  let msg = document.getElementById('cta-thank-you');
+  if (!msg) {
+    msg = document.createElement('p');
+    msg.id = 'cta-thank-you';
+    msg.textContent = 'Thanks for signing up! We\'ll be in touch s…
+
+1 passed, 0 failed — total 35.48s, $0.2290
+
+wrote results/static-landing-page.report.json

@@ -1,0 +1,174 @@
+running 1 case(s) via claude provider...
+
+PASS  full-snake-game-project   70.37s  $0.6781  13t  [multi-file,project,game,html,web,code,judge]
+    [ok] phase html             1 try  saved:cases/out/full-snake-game-project/index.html
+        attempt 1:
+          [ok] contains "<!DOCTYPE html" — found "<!DOCTYPE html"
+          [ok] regex /(?i)id=["']board["']/ — matched /(?i)id=["']board["']/
+          [ok] regex /(?i)type=["']module["']/ — matched /(?i)type=["']module["']/
+          [ok] contains "main.js" — found "main.js"
+          output: ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="score-displ…
+    [ok] phase css              1 try  saved:cases/out/full-snake-game-project/styles.css
+        attempt 1:
+          [ok] regex /(?i)#board/ — matched /(?i)#board/
+          [ok] regex /\{[^}]*:[^}]*\}/ — matched /\{[^}]*:[^}]*\}/
+          output: ```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1a1a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: monospace;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;…
+    [ok] phase constants        1 try  saved:cases/out/full-snake-game-project/constants.js
+        attempt 1:
+          [ok] regex /(?i)export\s+const\s+CELL_SIZE/ — matched /(?i)export\s+const\s+CELL_SIZE/
+          [ok] regex /(?i)export\s+const\s+GRID_SIZE/ — matched /(?i)export\s+const\s+GRID_SIZE/
+          output: The file already has the correct content. Here it is:
+
+```js
+export const CELL_SIZE = 20;
+export const GRID_SIZE = 20;
+export const TICK_MS = 120;
+```
+    [ok] phase board            1 try  saved:cases/out/full-snake-game-project/board.js
+        attempt 1:
+          [ok] regex /(?i)import\s*\{[^}]*\}\s*from\s*['"]\./constants\.js['"]/ — matched /(?i)import\s*\{[^}]*\}\s*from\s*['"]\./constants\.js['"]/
+          [ok] regex /(?i)export\s+function\s+drawCell/ — matched /(?i)export\s+function\s+drawCell/
+          output: ```js
+import { CELL_SIZE, GRID_SIZE } from './constants.js';
+
+export function clearBoard(ctx) {
+    ctx.clearRect(0, 0, GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE);
+}
+
+export function drawCell(ctx, x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x * CELL_SIZE, y * CE…
+    [ok] phase snake            1 try  saved:cases/out/full-snake-game-project/snake.js
+        attempt 1:
+          [ok] regex /(?i)export\s+class\s+Snake/ — matched /(?i)export\s+class\s+Snake/
+          [ok] regex /(?i)setDirection|move\s*\(/ — matched /(?i)setDirection|move\s*\(/
+          output: ```js
+import { GRID_SIZE } from './constants.js';
+
+export class Snake {
+  constructor() {
+    this.body = [
+      { x: 10, y: 10 },
+      { x: 9, y: 10 },
+      { x: 8, y: 10 },
+    ];
+    this.direction = { x: 1, y: 0 };
+    this._pendingGrow = false;
+  }
+
+  setDirection(dir) {
+…
+    [ok] phase food             1 try  saved:cases/out/full-snake-game-project/food.js
+        attempt 1:
+          [ok] regex /(?i)import\s*\{[^}]*GRID_SIZE[^}]*\}\s*from\s*['"]\./constants\.js['"]/ — matched /(?i)import\s*\{[^}]*GRID_SIZE[^}]*\}\s*from\s*['"]\./constants\.js['"]/
+          [ok] regex /(?i)export\s+function\s+spawnFood/ — matched /(?i)export\s+function\s+spawnFood/
+          output: ```js
+import { GRID_SIZE } from './constants.js';
+
+export function spawnFood(snake) {
+  let pos;
+  do {
+    pos = {
+      x: Math.floor(Math.random() * GRID_SIZE),
+      y: Math.floor(Math.random() * GRID_SIZE),
+    };
+  } while (snake.body.some(seg => seg.x === pos.x && seg.y ==…
+    [ok] phase input            1 try  saved:cases/out/full-snake-game-project/input.js
+        attempt 1:
+          [ok] regex /(?i)export\s+function\s+attachInput/ — matched /(?i)export\s+function\s+attachInput/
+          [ok] regex /(?i)addEventListener\(['"]keydown['"]/ — matched /(?i)addEventListener\(['"]keydown['"]/
+          [ok] regex /(?i)setDirection/ — matched /(?i)setDirection/
+          output: ```js
+import { Snake } from './snake.js';
+
+const KEY_MAP = {
+  ArrowUp:    { x: 0, y: -1 },
+  ArrowDown:  { x: 0, y:  1 },
+  ArrowLeft:  { x: -1, y: 0 },
+  ArrowRight: { x:  1, y: 0 },
+  w:          { x: 0, y: -1 },
+  s:          { x: 0, y:  1 },
+  a:          { x: -1, y: 0 },
+  …
+    [ok] phase game             1 try  saved:cases/out/full-snake-game-project/game.js
+        attempt 1:
+          [ok] regex /(?i)import\s.*from\s*['"]\./snake\.js['"]/ — matched /(?i)import\s.*from\s*['"]\./snake\.js['"]/
+          [ok] regex /(?i)import\s.*from\s*['"]\./food\.js['"]/ — matched /(?i)import\s.*from\s*['"]\./food\.js['"]/
+          [ok] regex /(?i)export\s+(class\s+Game|function|const)/ — matched /(?i)export\s+(class\s+Game|function|const)/
+          output: ```js
+import { TICK_MS } from './constants.js';
+import { clearBoard, drawCell } from './board.js';
+import { Snake } from './snake.js';
+import { spawnFood } from './food.js';
+
+export class Game {
+  constructor(ctx) {
+    this.ctx = ctx;
+    this.snake = new Snake();
+    this.food …
+    [ok] phase main             1 try  saved:cases/out/full-snake-game-project/main.js
+        attempt 1:
+          [ok] regex /(?i)getElementById\(['"]board['"]\)|querySelector\(['"]#board['"]\)/ — matched /(?i)getElementById\(['"]board['"]\)|querySelector\(['"]#board['"]\)/
+          [ok] regex /(?i)import\s.*from\s*['"]\./game\.js['"]/ — matched /(?i)import\s.*from\s*['"]\./game\.js['"]/
+          [ok] regex /(?i)import\s.*from\s*['"]\./input\.js['"]/ — matched /(?i)import\s.*from\s*['"]\./input\.js['"]/
+          [ok] judge: main.js is a valid ES-module entry point that obtains the #board canvas context and #score element from the provided index.html, imports and starts the Game from game.js, wires attachInput from input.js, and starts the loop, consistent with the exported names of those modules. — judge: PASS
+          output: ```js
+import { Game } from './game.js';
+import { attachInput } from './input.js';
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+
+const game = new Game(ctx);
+
+game.onScoreChange = (score) =>…
+    [ok] phase readme           1 try  saved:cases/out/full-snake-game-project/README.md
+        attempt 1:
+          [ok] regex /(?m)^#\s+/ — matched /(?m)^#\s+/
+          [ok] regex /(?i)module|http/ — matched /(?i)module|http/
+          [ok] regex /(?i)snake/ — matched /(?i)snake/
+          output: ```markdown
+# Snake
+
+A classic Snake game built with vanilla JavaScript ES modules and an HTML5 Canvas.
+
+## Source Files
+
+| File | Description |
+|------|-------------|
+| `index.html` | Entry point — sets up the page, score display, and canvas element |
+| `styles.css` | Layout a…
+
+1 passed, 0 failed — total 70.37s, $0.6781
+
+wrote results/full-snake-game-project.report.json

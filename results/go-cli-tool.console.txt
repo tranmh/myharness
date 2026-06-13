@@ -1,0 +1,68 @@
+running 1 case(s) via claude provider...
+
+PASS  go-cli-tool               11.98s  $0.2331  4t  [multi-file,project,go,code]
+    [ok] phase mod              1 try  saved:cases/out/go-cli-tool/go.mod
+        attempt 1:
+          [ok] regex /(?m)^module\s+example\.com/greet/ — matched /(?m)^module\s+example\.com/greet/
+          [ok] regex /(?m)^go\s+1\./ — matched /(?m)^go\s+1\./
+          output: ```go
+module example.com/greet
+
+go 1.22
+```
+    [ok] phase greet            1 try  saved:cases/out/go-cli-tool/greet.go
+        attempt 1:
+          [ok] regex /(?m)^package\s+main/ — matched /(?m)^package\s+main/
+          [ok] regex /(?i)func\s+Greet\s*\(\s*name\s+string\s*\)\s*string/ — matched /(?i)func\s+Greet\s*\(\s*name\s+string\s*\)\s*string/
+          output: ```go
+package main
+
+func Greet(name string) string {
+	if name == "" {
+		return "Hello, World!"
+	}
+	return "Hello, " + name + "!"
+}
+```
+    [ok] phase main             1 try  saved:cases/out/go-cli-tool/main.go
+        attempt 1:
+          [ok] regex /(?m)^package\s+main/ — matched /(?m)^package\s+main/
+          [ok] regex /(?i)func\s+main\s*\(/ — matched /(?i)func\s+main\s*\(/
+          [ok] regex /(?i)Greet\s*\(/ — matched /(?i)Greet\s*\(/
+          output: ```go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	name := ""
+	if len(os.Args) > 1 {
+		name = os.Args[1]
+	}
+	fmt.Println(Greet(name))
+}
+```
+    [ok] phase test             1 try  saved:cases/out/go-cli-tool/greet_test.go
+        attempt 1:
+          [ok] regex /(?m)^package\s+main/ — matched /(?m)^package\s+main/
+          [ok] regex /(?i)import\s+"testing"|"testing"/ — matched /(?i)import\s+"testing"|"testing"/
+          [ok] regex /(?i)func\s+Test\w*\s*\(\s*t\s+\*testing\.T/ — matched /(?i)func\s+Test\w*\s*\(\s*t\s+\*testing\.T/
+          [ok] judge: greet_test.go is a valid Go test in package main that exercises Greet for both a named and an empty input and asserts the expected greeting strings. — judge: PASS
+          output: ```go
+package main
+
+import "testing"
+
+func TestGreet(t *testing.T) {
+	if got := Greet("Ada"); got != "Hello, Ada!" {
+		t.Errorf("Greet(\"Ada\") = %q, want \"Hello, Ada!\"", got)
+	}
+	if got := Greet(""); got != "Hello, World!" {
+		t.Errorf("Greet(\"\") = %q, want \"Hello, World!\"…
+
+1 passed, 0 failed — total 11.98s, $0.2331
+
+wrote results/go-cli-tool.report.json

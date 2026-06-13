@@ -1,0 +1,89 @@
+running 1 case(s) via claude provider...
+
+PASS  flask-todo-api            42.59s  $0.3607  9t  [multi-file,project,python,web,code]
+    [ok] phase requirements     1 try  saved:cases/out/flask-todo-api/requirements.txt
+        attempt 1:
+          [ok] regex /(?i)Flask/ — matched /(?i)Flask/
+          [ok] regex /(?i)pytest/ — matched /(?i)pytest/
+          output: ```text
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+pytest==8.2.2
+```
+    [ok] phase models           1 try  saved:cases/out/flask-todo-api/models.py
+        attempt 1:
+          [ok] regex /(?i)class\s+Todo/ — matched /(?i)class\s+Todo/
+          [ok] regex /(?i)db\s*=\s*SQLAlchemy|from\s+flask_sqlalchemy/ — matched /(?i)db\s*=\s*SQLAlchemy|from\s+flask_sqlalchemy/
+          [ok] regex /(?i)def\s+to_dict/ — matched /(?i)def\s+to_dict/
+          output: ```python
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    done = db.Column(db.Boolean, default=False, nullable=False)
+
+    def to_dict(sel…
+    [ok] phase app              1 try  saved:cases/out/flask-todo-api/app.py
+        attempt 1:
+          [ok] regex /(?i)from\s+models\s+import|import\s+models/ — matched /(?i)from\s+models\s+import|import\s+models/
+          [ok] regex /(?i)@app\.route\(['"]/todos/ — matched /(?i)@app\.route\(['"]/todos/
+          [ok] regex /(?i)Flask\(/ — matched /(?i)Flask\(/
+          output: ```python
+from flask import Flask, request, jsonify
+from models import db, Todo
+
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todos.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+…
+    [ok] phase tests            1 try  saved:cases/out/flask-todo-api/test_app.py
+        attempt 1:
+          [ok] regex /(?i)test_client|\.client/ — matched /(?i)test_client|\.client/
+          [ok] regex /(?i)/todos/ — matched /(?i)/todos/
+          [ok] regex /(?i)def\s+test_/ — matched /(?i)def\s+test_/
+          output: ```python
+import pytest
+from app import app, db
+
+
+@pytest.fixture
+def client():
+    app.config["TESTING"] = True
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    with app.app_context():
+        db.create_all()
+        yield app.test_client()
+        db.drop_al…
+    [ok] phase readme           1 try  saved:cases/out/flask-todo-api/README.md
+        attempt 1:
+          [ok] regex /(?m)^#\s+/ — matched /(?m)^#\s+/
+          [ok] regex /(?i)/todos/ — matched /(?i)/todos/
+          [ok] judge: README.md documents the Flask to-do API and accurately describes the endpoints (list, create, delete) and how to install dependencies and run the server, consistent with the provided app.py. — judge: PASS
+          output: ```markdown
+# Flask To-Do API
+
+A simple REST API for managing to-do items, built with Flask and SQLite.
+
+## Installation
+
+1. Clone the repository and create a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+
+2. Inst…
+
+1 passed, 0 failed — total 42.59s, $0.3607
+
+wrote results/flask-todo-api.report.json

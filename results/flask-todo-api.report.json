@@ -1,0 +1,215 @@
+[
+  {
+    "name": "flask-todo-api",
+    "tags": [
+      "multi-file",
+      "project",
+      "python",
+      "web",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "requirements",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```text\nFlask==3.0.3\nFlask-SQLAlchemy==3.1.1\npytest==8.2.2\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)Flask/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)Flask/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)pytest/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)pytest/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0585609,
+            "num_turns": 1,
+            "duration": 3576000000
+          }
+        ],
+        "saved_to": "cases/out/flask-todo-api/requirements.txt"
+      },
+      {
+        "name": "models",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\nfrom flask_sqlalchemy import SQLAlchemy\n\ndb = SQLAlchemy()\n\n\nclass Todo(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    title = db.Column(db.String(255), nullable=False)\n    done = db.Column(db.Boolean, default=False, nullable=False)\n\n    def to_dict(self):\n        return {\"id\": self.id, \"title\": self.title, \"done\": self.done}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)class\\s+Todo/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)class\\s+Todo/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)db\\s*=\\s*SQLAlchemy|from\\s+flask_sqlalchemy/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)db\\s*=\\s*SQLAlchemy|from\\s+flask_sqlalchemy/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)def\\s+to_dict/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)def\\s+to_dict/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.1102838,
+            "num_turns": 5,
+            "duration": 20630000000
+          }
+        ],
+        "saved_to": "cases/out/flask-todo-api/models.py"
+      },
+      {
+        "name": "app",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\nfrom flask import Flask, request, jsonify\nfrom models import db, Todo\n\napp = Flask(__name__)\napp.config[\"SQLALCHEMY_DATABASE_URI\"] = \"sqlite:///todos.db\"\napp.config[\"SQLALCHEMY_TRACK_MODIFICATIONS\"] = False\n\ndb.init_app(app)\n\nwith app.app_context():\n    db.create_all()\n\n\n@app.route(\"/todos\", methods=[\"GET\"])\ndef list_todos():\n    todos = Todo.query.all()\n    return jsonify([t.to_dict() for t in todos])\n\n\n@app.route(\"/todos\", methods=[\"POST\"])\ndef create_todo():\n    data = request.get_json()\n    todo = Todo(title=data[\"title\"])\n    db.session.add(todo)\n    db.session.commit()\n    return jsonify(todo.to_dict()), 201\n\n\n@app.route(\"/todos/\u003cint:id\u003e\", methods=[\"DELETE\"])\ndef delete_todo(id):\n    todo = Todo.query.get_or_404(id)\n    db.session.delete(todo)\n    db.session.commit()\n    return \"\", 204\n\n\nif __name__ == \"__main__\":\n    app.run(debug=True)\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)from\\s+models\\s+import|import\\s+models/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)from\\s+models\\s+import|import\\s+models/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)@app\\.route\\(['\"]/todos/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)@app\\.route\\(['\"]/todos/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)Flask\\(/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)Flask\\(/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0629499,
+            "num_turns": 1,
+            "duration": 5905000000
+          }
+        ],
+        "saved_to": "cases/out/flask-todo-api/app.py"
+      },
+      {
+        "name": "tests",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```python\nimport pytest\nfrom app import app, db\n\n\n@pytest.fixture\ndef client():\n    app.config[\"TESTING\"] = True\n    app.config[\"SQLALCHEMY_DATABASE_URI\"] = \"sqlite:///:memory:\"\n    with app.app_context():\n        db.create_all()\n        yield app.test_client()\n        db.drop_all()\n\n\ndef test_create_and_list_todo(client):\n    response = client.post(\"/todos\", json={\"title\": \"Buy milk\"})\n    assert response.status_code == 201\n    data = response.get_json()\n    assert data[\"title\"] == \"Buy milk\"\n\n    response = client.get(\"/todos\")\n    assert response.status_code == 200\n    todos = response.get_json()\n    assert len(todos) == 1\n    assert todos[0][\"title\"] == \"Buy milk\"\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)test_client|\\.client/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)test_client|\\.client/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)/todos/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)/todos/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)def\\s+test_/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)def\\s+test_/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.062110900000000004,
+            "num_turns": 1,
+            "duration": 4255000000
+          }
+        ],
+        "saved_to": "cases/out/flask-todo-api/test_app.py"
+      },
+      {
+        "name": "readme",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```markdown\n# Flask To-Do API\n\nA simple REST API for managing to-do items, built with Flask and SQLite.\n\n## Installation\n\n1. Clone the repository and create a virtual environment:\n\n```bash\npython -m venv venv\nsource venv/bin/activate  # Windows: venv\\Scripts\\activate\n```\n\n2. Install dependencies:\n\n```bash\npip install -r requirements.txt\n```\n\n## Running the Server\n\n```bash\npython app.py\n```\n\nThe server starts at `http://127.0.0.1:5000` by default.\n\n## Endpoints\n\n### List all to-dos\n\n```\nGET /todos\n```\n\nReturns a JSON array of all to-do items.\n\n**Response**\n\n```json\n[\n  { \"id\": 1, \"title\": \"Buy milk\", \"done\": false }\n]\n```\n\n---\n\n### Create a to-do\n\n```\nPOST /todos\nContent-Type: application/json\n```\n\n**Request body**\n\n```json\n{ \"title\": \"Buy milk\" }\n```\n\n**Response** — `201 Created`\n\n```json\n{ \"id\": 1, \"title\": \"Buy milk\", \"done\": false }\n```\n\n---\n\n### Delete a to-do\n\n```\nDELETE /todos/\u003cid\u003e\n```\n\n**Response** — `204 No Content`\n\n## Running the Tests\n\n```bash\npytest\n```\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^#\\s+/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^#\\s+/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)/todos/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)/todos/"
+                }
+              },
+              {
+                "scorer": "judge: README.md documents the Flask to-do API and accurately describes the endpoints (list, create, delete) and how to install dependencies and run the server, consistent with the provided app.py.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.06684390000000001,
+            "num_turns": 1,
+            "duration": 8229000000
+          }
+        ],
+        "saved_to": "cases/out/flask-todo-api/README.md"
+      }
+    ],
+    "cost_usd": 0.36074940000000005,
+    "num_turns": 9,
+    "duration": 42595000000
+  }
+]

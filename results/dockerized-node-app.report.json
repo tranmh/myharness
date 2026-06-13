@@ -1,0 +1,257 @@
+[
+  {
+    "name": "dockerized-node-app",
+    "tags": [
+      "multi-file",
+      "project",
+      "node",
+      "docker",
+      "web",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "pkg",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```json\n{\n  \"name\": \"dockerized-node-app\",\n  \"version\": \"1.0.0\",\n  \"main\": \"server.js\",\n  \"scripts\": {\n    \"start\": \"node server.js\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\"\n  }\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)\"express\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\"express\"/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)\"start\"\\s*:\\s*\"node\\s+server\\.js\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\"start\"\\s*:\\s*\"node\\s+server\\.js\"/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)\"main\"\\s*:\\s*\"server\\.js\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\"main\"\\s*:\\s*\"server\\.js\"/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.05813189999999999,
+            "num_turns": 1,
+            "duration": 3802000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/package.json"
+      },
+      {
+        "name": "server",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\nconst express = require('express');\n\nconst app = express();\nconst port = process.env.PORT || 3000;\n\napp.get('/', (req, res) =\u003e {\n  res.json({ status: 'ok' });\n});\n\napp.listen(port);\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)require\\(['\"]express['\"]\\)|import\\s+express/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)require\\(['\"]express['\"]\\)|import\\s+express/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)process\\.env\\.PORT/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)process\\.env\\.PORT/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)\\.listen\\(/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\\.listen\\(/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0593129,
+            "num_turns": 1,
+            "duration": 3728000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/server.js"
+      },
+      {
+        "name": "dockerfile",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```dockerfile\nFROM node:18-alpine\n\nWORKDIR /app\n\nCOPY package.json .\nRUN npm install\n\nCOPY server.js .\n\nEXPOSE 3000\n\nCMD [\"npm\", \"start\"]\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?im)^FROM\\s+node/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?im)^FROM\\s+node/"
+                }
+              },
+              {
+                "scorer": "regex /(?im)^EXPOSE\\s+3000/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?im)^EXPOSE\\s+3000/"
+                }
+              },
+              {
+                "scorer": "regex /(?im)^CMD/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?im)^CMD/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0588039,
+            "num_turns": 1,
+            "duration": 3857000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/Dockerfile"
+      },
+      {
+        "name": "compose",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```yaml\nversion: \"3.8\"\nservices:\n  web:\n    build: .\n    ports:\n      - \"3000:3000\"\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)services\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)services\\s*:/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)build\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)build\\s*:/"
+                }
+              },
+              {
+                "scorer": "regex /3000:3000/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /3000:3000/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.05828089999999999,
+            "num_turns": 1,
+            "duration": 3107000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/docker-compose.yml"
+      },
+      {
+        "name": "dockerignore",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```text\nnode_modules\nnpm-debug.log\n.git\n```",
+            "scores": [
+              {
+                "scorer": "contains \"node_modules\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"node_modules\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)\\.git/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)\\.git/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0569599,
+            "num_turns": 1,
+            "duration": 3207000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/.dockerignore"
+      },
+      {
+        "name": "readme",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```markdown\n# Dockerized Node App\n\nA minimal Express HTTP server that responds to `GET /` with `{\"status\":\"ok\"}`.\n\n## What it does\n\n- `GET /` — returns `{\"status\":\"ok\"}` with HTTP 200\n\n## Run locally with Node\n\n```sh\nnpm install\nnpm start\n```\n\nThe server listens on port 3000. Visit http://localhost:3000 to verify.\n\n## Run with Docker\n\n```sh\ndocker build -t dockerized-node-app .\ndocker run -p 3000:3000 dockerized-node-app\n```\n\n## Run with Docker Compose\n\n```sh\ndocker compose up --build\n```\n\nThe service is exposed on http://localhost:3000.\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?m)^#\\s+/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^#\\s+/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)docker/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)docker/"
+                }
+              },
+              {
+                "scorer": "judge: README.md documents the dockerized Node/Express service and gives correct instructions for both running it locally with node and building/running it via Docker and docker compose, consistent with the provided files.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0623339,
+            "num_turns": 1,
+            "duration": 5661000000
+          }
+        ],
+        "saved_to": "cases/out/dockerized-node-app/README.md"
+      }
+    ],
+    "cost_usd": 0.35382339999999995,
+    "num_turns": 6,
+    "duration": 23362000000
+  }
+]

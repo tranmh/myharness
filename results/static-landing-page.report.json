@@ -1,0 +1,150 @@
+[
+  {
+    "name": "static-landing-page",
+    "tags": [
+      "multi-file",
+      "project",
+      "html",
+      "css",
+      "web",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "html",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```html\n\u003c!DOCTYPE html\u003e\n\u003chtml lang=\"en\"\u003e\n\u003chead\u003e\n  \u003cmeta charset=\"UTF-8\"\u003e\n  \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"\u003e\n  \u003ctitle\u003eProductly — Build faster, ship smarter\u003c/title\u003e\n  \u003clink rel=\"stylesheet\" href=\"styles.css\"\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n  \u003cheader\u003e\n    \u003cdiv class=\"container header-inner\"\u003e\n      \u003ca class=\"logo\" href=\"#\"\u003eProductly\u003c/a\u003e\n      \u003cnav\u003e\n        \u003ca href=\"#features\"\u003eFeatures\u003c/a\u003e\n        \u003ca href=\"#cta\"\u003eGet started\u003c/a\u003e\n      \u003c/nav\u003e\n    \u003c/div\u003e\n  \u003c/header\u003e\n\n  \u003csection class=\"hero\"\u003e\n    \u003cdiv class=\"container hero-inner\"\u003e\n      \u003ch1\u003eBuild faster,\u003cbr\u003eship smarter\u003c/h1\u003e\n      \u003cp class=\"hero-sub\"\u003eProductly gives your team the tools to go from idea to production in record time — without the usual headaches.\u003c/p\u003e\n      \u003cbutton id=\"cta\"\u003eStart for free\u003c/button\u003e\n    \u003c/div\u003e\n  \u003c/section\u003e\n\n  \u003csection id=\"features\" class=\"features\"\u003e\n    \u003cdiv class=\"container\"\u003e\n      \u003ch2\u003eEverything you need\u003c/h2\u003e\n      \u003cdiv class=\"cards\"\u003e\n        \u003carticle class=\"card\"\u003e\n          \u003cdiv class=\"card-icon\"\u003e⚡\u003c/div\u003e\n          \u003ch3\u003eLightning fast\u003c/h3\u003e\n          \u003cp\u003eOptimised pipelines cut build times by up to 70%, so your team spends less time waiting and more time creating.\u003c/p\u003e\n        \u003c/article\u003e\n        \u003carticle class=\"card\"\u003e\n          \u003cdiv class=\"card-icon\"\u003e🔒\u003c/div\u003e\n          \u003ch3\u003eSecure by default\u003c/h3\u003e\n          \u003cp\u003eEnd-to-end encryption, role-based access controls, and automated security scans keep your codebase safe.\u003c/p\u003e\n        \u003c/article\u003e\n        \u003carticle class=\"card\"\u003e\n          \u003cdiv class=\"card-icon\"\u003e📈\u003c/div\u003e\n          \u003ch3\u003eBuilt to scale\u003c/h3\u003e\n          \u003cp\u003eFrom solo projects to enterprise teams, Productly scales with you — no re-architecture required.\u003c/p\u003e\n        \u003c/article\u003e\n      \u003c/div\u003e\n    \u003c/div\u003e\n  \u003c/section\u003e\n\n  \u003cfooter\u003e\n    \u003cdiv class=\"container footer-inner\"\u003e\n      \u003cspan class=\"logo\"\u003eProductly\u003c/span\u003e\n      \u003cp\u003e\u0026copy; 2026 Productly, Inc. All rights reserved.\u003c/p\u003e\n    \u003c/div\u003e\n  \u003c/footer\u003e\n\n  \u003cscript src=\"app.js\" defer\u003e\u003c/script\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```",
+            "scores": [
+              {
+                "scorer": "contains \"\u003c!DOCTYPE html\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"\u003c!DOCTYPE html\""
+                }
+              },
+              {
+                "scorer": "contains \"styles.css\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"styles.css\""
+                }
+              },
+              {
+                "scorer": "contains \"app.js\"",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "found \"app.js\""
+                }
+              },
+              {
+                "scorer": "regex /(?i)id=[\"']cta[\"']/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)id=[\"']cta[\"']/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0690979,
+            "num_turns": 1,
+            "duration": 12964000000
+          }
+        ],
+        "saved_to": "cases/out/static-landing-page/index.html"
+      },
+      {
+        "name": "css",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```css\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n:root {\n  --brand: #4f46e5;\n  --brand-dark: #3730a3;\n  --text: #111827;\n  --muted: #6b7280;\n  --bg: #ffffff;\n  --surface: #f9fafb;\n  --border: #e5e7eb;\n  --radius: 12px;\n}\n\nhtml {\n  scroll-behavior: smooth;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n  color: var(--text);\n  background: var(--bg);\n  line-height: 1.6;\n}\n\n.container {\n  max-width: 1100px;\n  margin: 0 auto;\n  padding: 0 1.5rem;\n}\n\n/* Header */\nheader {\n  position: sticky;\n  top: 0;\n  z-index: 100;\n  background: rgba(255, 255, 255, 0.85);\n  backdrop-filter: blur(10px);\n  border-bottom: 1px solid var(--border);\n}\n\n.header-inner {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  height: 64px;\n}\n\n.logo {\n  font-size: 1.25rem;\n  font-weight: 700;\n  color: var(--brand);\n  text-decoration: none;\n  letter-spacing: -0.02em;\n}\n\nnav {\n  display: flex;\n  gap: 2rem;\n}\n\nnav a {\n  color: var(--muted);\n  text-decoration: none;\n  font-size: 0.95rem;\n  font-weight: 500;\n  transition: color 0.2s;\n}\n\nnav a:hover {\n  color: var(--text);\n}\n\n/* Hero */\n.hero {\n  padding: 6rem 0 5rem;\n  background: linear-gradient(135deg, #eef2ff 0%, #f0fdf4 100%);\n}\n\n.hero-inner {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  text-align: center;\n  gap: 1.5rem;\n}\n\n.hero h1 {\n  font-size: clamp(2.5rem, 6vw, 4rem);\n  font-weight: 800;\n  letter-spacing: -0.03em;\n  line-height: 1.15;\n  color: var(--text);\n}\n\n.hero-sub {\n  max-width: 540px;\n  font-size: 1.125rem;\n  color: var(--muted);\n}\n\n#cta {\n  margin-top: 0.5rem;\n  padding: 0.875rem 2.25rem;\n  background: var(--brand);\n  color: #fff;\n  border: none;\n  border-radius: 8px;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;\n  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);\n}\n\n#cta:hover {\n  background: var(--brand-dark);\n  transform: translateY(-2px);\n  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);\n}\n\n#cta:active {\n  transform: translateY(0);\n}\n\n/* Features */\n.features {\n  padding: 5rem 0;\n  background: var(--bg);\n}\n\n.features h2 {\n  font-size: 2rem;\n  font-weight: 700;\n  letter-spacing: -0.02em;\n  text-align: center;\n  margin-bottom: 3rem;\n}\n\n.cards {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\n  gap: 1.5rem;\n}\n\n.card {\n  background: var(--surface);\n  border: 1px solid var(--border);\n  border-radius: var(--radius);\n  padding: 2rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n  transition: box-shadow 0.2s, transform 0.2s;\n}\n\n.card:hover {\n  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);\n  transform: translateY(-3px);\n}\n\n.card-icon {\n  font-size: 2rem;\n  line-height: 1;\n}\n\n.card h3 {\n  font-size: 1.1rem;\n  font-weight: 600;\n}\n\n.card p {\n  font-size: 0.95rem;\n  color: var(--muted);\n  line-height: 1.65;\n}\n\n/* Footer */\nfooter {\n  background: var(--surface);\n  border-top: 1px solid var(--border);\n  padding: 2rem 0;\n}\n\n.footer-inner {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\nfooter .logo {\n  font-size: 1rem;\n}\n\nfooter p {\n  font-size: 0.875rem;\n  color: var(--muted);\n}\n\n@media (max-width: 600px) {\n  .footer-inner {\n    flex-direction: column;\n    text-align: center;\n  }\n\n  .hero {\n    padding: 4rem 0 3.5rem;\n  }\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)#cta/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)#cta/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)(flex|grid)/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)(flex|grid)/"
+                }
+              },
+              {
+                "scorer": "regex /\\{[^}]*:[^}]*\\}/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /\\{[^}]*:[^}]*\\}/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.08517989999999999,
+            "num_turns": 1,
+            "duration": 17759000000
+          }
+        ],
+        "saved_to": "cases/out/static-landing-page/styles.css"
+      },
+      {
+        "name": "js",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```js\ndocument.getElementById('cta').addEventListener('click', function () {\n  let msg = document.getElementById('cta-thank-you');\n  if (!msg) {\n    msg = document.createElement('p');\n    msg.id = 'cta-thank-you';\n    msg.textContent = 'Thanks for signing up! We\\'ll be in touch soon.';\n    msg.style.cssText = 'margin-top:1rem;color:#4f46e5;font-weight:600;font-size:1rem;';\n    this.insertAdjacentElement('afterend', msg);\n  } else {\n    msg.style.display = msg.style.display === 'none' ? '' : 'none';\n  }\n});\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)getElementById\\(['\"]cta['\"]\\)|querySelector\\(['\"]#cta['\"]\\)/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)getElementById\\(['\"]cta['\"]\\)|querySelector\\(['\"]#cta['\"]\\)/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)addEventListener/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)addEventListener/"
+                }
+              },
+              {
+                "scorer": "judge: app.js is valid vanilla JavaScript that wires a click handler to the #cta element defined in the provided index.html, without relying on any framework.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.07470790000000001,
+            "num_turns": 1,
+            "duration": 4753000000
+          }
+        ],
+        "saved_to": "cases/out/static-landing-page/app.js"
+      }
+    ],
+    "cost_usd": 0.22898570000000001,
+    "num_turns": 3,
+    "duration": 35476000000
+  }
+]

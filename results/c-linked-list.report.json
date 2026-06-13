@@ -1,0 +1,181 @@
+[
+  {
+    "name": "c-linked-list",
+    "tags": [
+      "multi-file",
+      "project",
+      "c",
+      "code"
+    ],
+    "pass": true,
+    "phases": [
+      {
+        "name": "header",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```c\n#ifndef LIST_H\n#define LIST_H\n\nstruct Node {\n    int value;\n    struct Node *next;\n};\n\nvoid list_push(struct Node **head, int value);\nint list_length(struct Node *head);\nvoid list_free(struct Node *head);\nvoid list_print(struct Node *head);\n\n#endif\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)#ifndef|#pragma once/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)#ifndef|#pragma once/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)struct\\s+Node/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)struct\\s+Node/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)list_push/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)list_push/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0588699,
+            "num_turns": 1,
+            "duration": 3954000000
+          }
+        ],
+        "saved_to": "cases/out/c-linked-list/list.h"
+      },
+      {
+        "name": "impl",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```c\n#include \u003cstdio.h\u003e\n#include \u003cstdlib.h\u003e\n#include \"list.h\"\n\nvoid list_push(struct Node **head, int value) {\n    struct Node *node = malloc(sizeof(struct Node));\n    node-\u003evalue = value;\n    node-\u003enext = *head;\n    *head = node;\n}\n\nint list_length(struct Node *head) {\n    int count = 0;\n    while (head) {\n        count++;\n        head = head-\u003enext;\n    }\n    return count;\n}\n\nvoid list_free(struct Node *head) {\n    while (head) {\n        struct Node *next = head-\u003enext;\n        free(head);\n        head = next;\n    }\n}\n\nvoid list_print(struct Node *head) {\n    while (head) {\n        printf(\"%d\", head-\u003evalue);\n        if (head-\u003enext) printf(\" \");\n        head = head-\u003enext;\n    }\n    printf(\"\\n\");\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)#include\\s+\"list\\.h\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)#include\\s+\"list\\.h\"/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)malloc/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)malloc/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)list_push/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)list_push/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.06088489999999999,
+            "num_turns": 1,
+            "duration": 7768000000
+          }
+        ],
+        "saved_to": "cases/out/c-linked-list/list.c"
+      },
+      {
+        "name": "main",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```c\n#include \u003cstdio.h\u003e\n#include \"list.h\"\n\nint main(void) {\n    struct Node *head = NULL;\n\n    list_push(\u0026head, 10);\n    list_push(\u0026head, 20);\n    list_push(\u0026head, 30);\n\n    list_print(head);\n    printf(\"Length: %d\\n\", list_length(head));\n\n    list_free(head);\n    return 0;\n}\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)#include\\s+\"list\\.h\"/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)#include\\s+\"list\\.h\"/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)int\\s+main/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)int\\s+main/"
+                }
+              },
+              {
+                "scorer": "regex /(?i)list_push|list_free/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)list_push|list_free/"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0591329,
+            "num_turns": 1,
+            "duration": 3415000000
+          }
+        ],
+        "saved_to": "cases/out/c-linked-list/main.c"
+      },
+      {
+        "name": "makefile",
+        "pass": true,
+        "tries": 1,
+        "attempts": [
+          {
+            "output": "```makefile\nCC = gcc\nCFLAGS = -Wall\nTARGET = list_demo\nSRCS = main.c list.c\n\n$(TARGET): $(SRCS)\n\t$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)\n\nclean:\n\trm -f $(TARGET)\n```",
+            "scores": [
+              {
+                "scorer": "regex /(?i)gcc|cc/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?i)gcc|cc/"
+                }
+              },
+              {
+                "scorer": "regex /(?m)^clean\\s*:/",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "matched /(?m)^clean\\s*:/"
+                }
+              },
+              {
+                "scorer": "judge: The Makefile compiles list.c and main.c with gcc into an executable and includes a working clean target; targets and prerequisites are syntactically valid make.",
+                "result": {
+                  "pass": true,
+                  "score": 1,
+                  "detail": "judge: PASS"
+                }
+              }
+            ],
+            "pass": true,
+            "cost_usd": 0.0587479,
+            "num_turns": 1,
+            "duration": 4110000000
+          }
+        ],
+        "saved_to": "cases/out/c-linked-list/Makefile"
+      }
+    ],
+    "cost_usd": 0.23763559999999997,
+    "num_turns": 4,
+    "duration": 19247000000
+  }
+]

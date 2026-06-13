@@ -1,0 +1,52 @@
+running 1 case(s) via claude provider...
+
+PASS  sql-schema-and-seed       27.44s  $0.2319  7t  [multi-file,project,sql,data,code]
+    [ok] phase schema           1 try  saved:cases/out/sql-schema-and-seed/schema.sql
+        attempt 1:
+          [ok] regex /(?i)CREATE\s+TABLE\s+authors/ — matched /(?i)CREATE\s+TABLE\s+authors/
+          [ok] regex /(?i)CREATE\s+TABLE\s+posts/ — matched /(?i)CREATE\s+TABLE\s+posts/
+          [ok] regex /(?i)FOREIGN\s+KEY/ — matched /(?i)FOREIGN\s+KEY/
+          output: ```sql
+CREATE TABLE authors (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT
+);
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY,
+    author_id INTEGER,
+    title TEXT NOT NULL,
+    body TEXT,
+    created_at TEXT,
+    FOREIGN KEY (author_id) REFERENCES authors…
+    [ok] phase seed             1 try  saved:cases/out/sql-schema-and-seed/seed.sql
+        attempt 1:
+          [ok] regex /(?i)INSERT\s+INTO\s+authors/ — matched /(?i)INSERT\s+INTO\s+authors/
+          [ok] regex /(?i)INSERT\s+INTO\s+posts/ — matched /(?i)INSERT\s+INTO\s+posts/
+          output: ```sql
+INSERT INTO authors (id, name, email) VALUES
+    (1, 'Alice Johnson', 'alice@example.com'),
+    (2, 'Bob Smith', 'bob@example.com');
+
+INSERT INTO posts (id, author_id, title, body, created_at) VALUES
+    (1, 1, 'Getting Started with SQL', 'SQL is a powerful language for ma…
+    [ok] phase queries          1 try  saved:cases/out/sql-schema-and-seed/queries.sql
+        attempt 1:
+          [ok] regex /(?i)SELECT/ — matched /(?i)SELECT/
+          [ok] regex /(?i)JOIN/ — matched /(?i)JOIN/
+          [ok] regex /(?i)GROUP\s+BY/ — matched /(?i)GROUP\s+BY/
+          [ok] judge: queries.sql contains valid SQL SELECT statements (including a JOIN of posts and authors and a GROUP BY count per author) consistent with the table and column names defined in the provided schema.sql. — judge: PASS
+          output: ```sql
+-- 1. All posts with their author's name
+SELECT posts.id, posts.title, posts.body, posts.created_at, authors.name AS author_name
+FROM posts
+JOIN authors ON posts.author_id = authors.id;
+
+-- 2. Count of posts per author
+SELECT authors.name, COUNT(posts.id) AS post_count
+FRO…
+
+1 passed, 0 failed — total 27.44s, $0.2319
+
+wrote results/sql-schema-and-seed.report.json

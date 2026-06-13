@@ -1,0 +1,105 @@
+running 1 case(s) via claude provider...
+
+PASS  dockerized-node-app       23.36s  $0.3538  6t  [multi-file,project,node,docker,web,code]
+    [ok] phase pkg              1 try  saved:cases/out/dockerized-node-app/package.json
+        attempt 1:
+          [ok] regex /(?i)"express"/ — matched /(?i)"express"/
+          [ok] regex /(?i)"start"\s*:\s*"node\s+server\.js"/ — matched /(?i)"start"\s*:\s*"node\s+server\.js"/
+          [ok] regex /(?i)"main"\s*:\s*"server\.js"/ — matched /(?i)"main"\s*:\s*"server\.js"/
+          output: ```json
+{
+  "name": "dockerized-node-app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+```
+    [ok] phase server           1 try  saved:cases/out/dockerized-node-app/server.js
+        attempt 1:
+          [ok] regex /(?i)require\(['"]express['"]\)|import\s+express/ — matched /(?i)require\(['"]express['"]\)|import\s+express/
+          [ok] regex /(?i)process\.env\.PORT/ — matched /(?i)process\.env\.PORT/
+          [ok] regex /(?i)\.listen\(/ — matched /(?i)\.listen\(/
+          output: ```js
+const express = require('express');
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.listen(port);
+```
+    [ok] phase dockerfile       1 try  saved:cases/out/dockerized-node-app/Dockerfile
+        attempt 1:
+          [ok] regex /(?im)^FROM\s+node/ — matched /(?im)^FROM\s+node/
+          [ok] regex /(?im)^EXPOSE\s+3000/ — matched /(?im)^EXPOSE\s+3000/
+          [ok] regex /(?im)^CMD/ — matched /(?im)^CMD/
+          output: ```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package.json .
+RUN npm install
+
+COPY server.js .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+    [ok] phase compose          1 try  saved:cases/out/dockerized-node-app/docker-compose.yml
+        attempt 1:
+          [ok] regex /(?i)services\s*:/ — matched /(?i)services\s*:/
+          [ok] regex /(?i)build\s*:/ — matched /(?i)build\s*:/
+          [ok] regex /3000:3000/ — matched /3000:3000/
+          output: ```yaml
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+```
+    [ok] phase dockerignore     1 try  saved:cases/out/dockerized-node-app/.dockerignore
+        attempt 1:
+          [ok] contains "node_modules" — found "node_modules"
+          [ok] regex /(?i)\.git/ — matched /(?i)\.git/
+          output: ```text
+node_modules
+npm-debug.log
+.git
+```
+    [ok] phase readme           1 try  saved:cases/out/dockerized-node-app/README.md
+        attempt 1:
+          [ok] regex /(?m)^#\s+/ — matched /(?m)^#\s+/
+          [ok] regex /(?i)docker/ — matched /(?i)docker/
+          [ok] judge: README.md documents the dockerized Node/Express service and gives correct instructions for both running it locally with node and building/running it via Docker and docker compose, consistent with the provided files. — judge: PASS
+          output: ```markdown
+# Dockerized Node App
+
+A minimal Express HTTP server that responds to `GET /` with `{"status":"ok"}`.
+
+## What it does
+
+- `GET /` — returns `{"status":"ok"}` with HTTP 200
+
+## Run locally with Node
+
+```sh
+npm install
+npm start
+```
+
+The server listens on port 3000. V…
+
+1 passed, 0 failed — total 23.36s, $0.3538
+
+wrote results/dockerized-node-app.report.json
