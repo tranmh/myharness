@@ -138,23 +138,27 @@ go run ./cmd/harness run cases/<case>.json --max-tries 2 --interactive never \
   2>&1 | tee results/<case>.console.txt
 ```
 
-**Result: all 9 re-run cases PASS** (every phase passed on the first try except
-where noted). Total cost of the passing runs ≈ **$2.20**.
+**Result: all 10 cases PASS** (every phase passed on the first try except where
+noted). Total cost of the passing runs ≈ **$2.88**.
 
-| Case                   | Phases | Result | Files | Cost     | Duration |
-|------------------------|--------|--------|-------|----------|----------|
-| `static-landing-page`  | 3      | PASS   | 3 / 3 | $0.2290  | 35.5s    |
-| `python-package`       | 3      | PASS   | 3 / 3 | $0.1833  | 14.0s    |
-| `go-cli-tool`          | 4      | PASS   | 4 / 4 | $0.2331  | 12.0s    |
-| `flask-todo-api`       | 5      | PASS   | 5 / 5 | $0.3607  | 42.6s    |
-| `c-linked-list`        | 4      | PASS   | 4 / 4 | $0.2376  | 19.3s    |
-| `bash-backup-toolkit`  | 2      | PASS*  | 2 / 2 | $0.1187  | 5.8s     |
-| `sql-schema-and-seed`  | 3      | PASS   | 3 / 3 | $0.2319  | 27.4s    |
-| `react-counter-spa`    | 4      | PASS   | 4 / 4 | $0.2514  | 23.5s    |
-| `dockerized-node-app`  | 6      | PASS   | 6 / 6 | $0.3538  | 23.4s    |
+| Case                       | Phases | Result | Files   | Cost     | Duration |
+|----------------------------|--------|--------|---------|----------|----------|
+| `static-landing-page`      | 3      | PASS   | 3 / 3   | $0.2290  | 35.5s    |
+| `python-package`           | 3      | PASS   | 3 / 3   | $0.1833  | 14.0s    |
+| `go-cli-tool`              | 4      | PASS   | 4 / 4   | $0.2331  | 12.0s    |
+| `flask-todo-api`           | 5      | PASS   | 5 / 5   | $0.3607  | 42.6s    |
+| `c-linked-list`            | 4      | PASS   | 4 / 4   | $0.2376  | 19.3s    |
+| `bash-backup-toolkit`      | 2      | PASS*  | 2 / 2   | $0.1187  | 5.8s     |
+| `sql-schema-and-seed`      | 3      | PASS   | 3 / 3   | $0.2319  | 27.4s    |
+| `react-counter-spa`        | 4      | PASS   | 4 / 4   | $0.2514  | 23.5s    |
+| `dockerized-node-app`      | 6      | PASS   | 6 / 6   | $0.3538  | 23.4s    |
+| `full-snake-game-project`  | 10     | PASS   | 10 / 10 | $0.6781  | 70.4s    |
 
 All judge scorers (on the integration/README phase of several cases) returned
-PASS. **34 files** were generated across the 9 cases, one per phase.
+PASS. **44 files** were generated across the 10 cases, one per phase. The 10-phase
+`full-snake-game-project` was run **solo** in its own sub-agent (it finished in
+~70s on its own; under the original `--parallel 4` batch it was starved and became
+the bottleneck).
 
 \* `bash-backup-toolkit` failed on the first attempt due to a **case-authoring
 bug**, not a model error: its shebang scorer `^#!/usr/bin/env bash` used a
@@ -163,8 +167,6 @@ with the ```` ```bash ```` code fence — so `^` never reached the shebang on li
 Fixed by adding the `(?m)` multiline flag (`(?m)^#!/usr/bin/env bash`); the re-run
 then passed. (Lesson: `^`/`$`-anchored regex scorers need `(?m)` because the model
 wraps output in a fenced block and scorers see the fence.)
-
-`full-snake-game-project` (10 phases) was intentionally **skipped** in this batch.
 
 Generated files live under `cases/out/<case>/` (git-ignored).
 
