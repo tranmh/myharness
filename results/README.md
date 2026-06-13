@@ -126,37 +126,54 @@ go run ./cmd/harness run cases/ --tag multi-file --max-tries 2 \
   | tee results/multifile.console.txt
 ```
 
-**This run was manually stopped before it finished**, so no `multifile.report.json`
-or final summary line was written — there is **no pass/fail or cost data** for it.
-The 10-phase `full-snake-game-project` was the bottleneck. The table below reflects
-only the files that reached disk in `cases/out/<case>/` at the time it was stopped.
+That first batch run was manually stopped before it finished (the 10-phase
+`full-snake-game-project` was the bottleneck). It was then **re-run per-case in
+parallel sub-agents** — one sub-agent per case, each invoking the harness on a
+single case file — skipping `full-snake-game-project`:
 
-| Case                     | Phases | Files written | Status      | Files |
-|--------------------------|--------|---------------|-------------|-------|
-| `python-package`         | 3      | 3 / 3         | complete    | calculator.py, test_calculator.py, README.md |
-| `go-cli-tool`            | 4      | 4 / 4         | complete    | go.mod, main.go, greet.go, greet_test.go |
-| `flask-todo-api`         | 5      | 5 / 5         | complete    | requirements.txt, models.py, app.py, test_app.py, README.md |
-| `c-linked-list`          | 4      | 4 / 4         | complete    | list.h, list.c, main.c, Makefile |
-| `dockerized-node-app`    | 6      | 6 / 6         | complete    | package.json, server.js, Dockerfile, docker-compose.yml, .dockerignore, README.md |
-| `sql-schema-and-seed`    | 3      | 2 / 3         | partial     | schema.sql, seed.sql (missing queries.sql) |
-| `react-counter-spa`      | 4      | 3 / 4         | partial     | index.html, app.jsx, styles.css (missing README.md) |
-| `full-snake-game-project`| 10     | 5 / 10        | partial     | index.html, styles.css, constants.js, board.js, snake.js (missing food.js, input.js, game.js, main.js, README.md) |
-| `static-landing-page`    | 3      | 0 / 3         | interrupted | (workdir created, no file saved before stop) |
-| `bash-backup-toolkit`    | 2      | 0 / 2         | interrupted | (workdir created, no file saved before stop) |
+```bash
+# one of these per case (run independently, in parallel sub-agents)
+go run ./cmd/harness run cases/<case>.json --max-tries 2 --interactive never \
+  --timeout 300 --output results/<case>.report.json --verbose \
+  2>&1 | tee results/<case>.console.txt
+```
 
-**5 of 10 cases produced their full file set; 3 partial; 2 had not yet written a
-file.** A file is only written when its phase's scorers pass, so the complete
-cases also passed every phase's scorers up to that point — but without the report
-JSON this cannot be stated as a scored pass/fail.
+**Result: all 9 re-run cases PASS** (every phase passed on the first try except
+where noted). Total cost of the passing runs ≈ **$2.20**.
 
-Generated files live under `cases/out/<case>/` (git-ignored). To finish the run,
-re-run the command above; per-phase results are not resumable, so it re-runs all
-10 cases from scratch.
+| Case                   | Phases | Result | Files | Cost     | Duration |
+|------------------------|--------|--------|-------|----------|----------|
+| `static-landing-page`  | 3      | PASS   | 3 / 3 | $0.2290  | 35.5s    |
+| `python-package`       | 3      | PASS   | 3 / 3 | $0.1833  | 14.0s    |
+| `go-cli-tool`          | 4      | PASS   | 4 / 4 | $0.2331  | 12.0s    |
+| `flask-todo-api`       | 5      | PASS   | 5 / 5 | $0.3607  | 42.6s    |
+| `c-linked-list`        | 4      | PASS   | 4 / 4 | $0.2376  | 19.3s    |
+| `bash-backup-toolkit`  | 2      | PASS*  | 2 / 2 | $0.1187  | 5.8s     |
+| `sql-schema-and-seed`  | 3      | PASS   | 3 / 3 | $0.2319  | 27.4s    |
+| `react-counter-spa`    | 4      | PASS   | 4 / 4 | $0.2514  | 23.5s    |
+| `dockerized-node-app`  | 6      | PASS   | 6 / 6 | $0.3538  | 23.4s    |
+
+All judge scorers (on the integration/README phase of several cases) returned
+PASS. **34 files** were generated across the 9 cases, one per phase.
+
+\* `bash-backup-toolkit` failed on the first attempt due to a **case-authoring
+bug**, not a model error: its shebang scorer `^#!/usr/bin/env bash` used a
+start-of-string anchor, but scorers run on the **raw** model output, which begins
+with the ```` ```bash ```` code fence — so `^` never reached the shebang on line 2.
+Fixed by adding the `(?m)` multiline flag (`(?m)^#!/usr/bin/env bash`); the re-run
+then passed. (Lesson: `^`/`$`-anchored regex scorers need `(?m)` because the model
+wraps output in a fenced block and scorers see the fence.)
+
+`full-snake-game-project` (10 phases) was intentionally **skipped** in this batch.
+
+Generated files live under `cases/out/<case>/` (git-ignored).
 
 ## Files in this directory
 
 - `mock.report.json` / `mock.console.txt` — mock pass output (git-ignored)
 - `run.report.json` / `run.console.txt` — real pass output (git-ignored)
-- `multifile.report.json` / `multifile.console.txt` — interrupted multi-file run
-  (git-ignored; report.json was never written because the run was stopped early)
+- `multifile.report.json` / `multifile.console.txt` — interrupted batch multi-file
+  run (git-ignored; report.json was never written because the run was stopped early)
+- `<case>.report.json` / `<case>.console.txt` — per-case re-runs of the 9
+  multi-file cases (git-ignored)
 - `README.md` — this summary (kept in git)

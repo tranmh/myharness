@@ -9,7 +9,7 @@
       "prompt": "Write 'backup.sh', a bash script that takes a source directory as its first argument and creates a gzipped tarball named 'backup-YYYYMMDD-HHMMSS.tar.gz' in the current directory. It must start with '#!/usr/bin/env bash', use 'set -euo pipefail', print usage and exit non-zero if no argument is given, and echo the name of the archive it created. Output ONLY the complete contents of backup.sh inside a single ```bash code block, nothing else.",
       "save_to": "backup.sh",
       "scorers": [
-        { "type": "regex", "pattern": "^#!/usr/bin/env bash|^#!/bin/bash" },
+        { "type": "regex", "pattern": "(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash" },
         { "type": "regex", "pattern": "(?i)set\\s+-euo\\s+pipefail|set\\s+-e" },
         { "type": "regex", "pattern": "(?i)tar\\b.*z|tar\\s+-?c.*z" }
       ]
@@ -19,7 +19,7 @@
       "prompt": "Here is backup.sh, which produces gzipped tarballs named 'backup-YYYYMMDD-HHMMSS.tar.gz':\n\n{{.Out.backup}}\n\nWrite 'restore.sh', a matching bash script that takes such a 'backup-*.tar.gz' archive as its first argument and a target directory as its optional second argument (defaulting to the current directory), then extracts the archive into the target. It must start with '#!/usr/bin/env bash', use 'set -euo pipefail', print usage and exit non-zero if no archive is given. The archive format must match what backup.sh produces above. Output ONLY the complete contents of restore.sh inside a single ```bash code block, nothing else.",
       "save_to": "restore.sh",
       "scorers": [
-        { "type": "regex", "pattern": "^#!/usr/bin/env bash|^#!/bin/bash" },
+        { "type": "regex", "pattern": "(?m)^#!/usr/bin/env bash|(?m)^#!/bin/bash" },
         { "type": "regex", "pattern": "(?i)tar\\b.*x|tar\\s+-?x" },
         { "type": "judge", "rubric": "restore.sh is a valid bash script that extracts a backup-*.tar.gz archive (matching the format produced by the provided backup.sh) into an optional target directory and validates its arguments." }
       ]
