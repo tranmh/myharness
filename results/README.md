@@ -112,8 +112,51 @@ Note: the workdir-based cases (snake, calc, tetris-phases) write under
 None. The real `claude` run passed all 24 cases on the first or second try
 (`--max-tries 2`). No case-level failures, timeouts, or budget overruns.
 
+## Multi-file project cases (real run — INTERRUPTED)
+
+A second real-`claude` run was started for the 10 multi-file, multi-phase project
+cases (selected with `--tag multi-file`), after the `workdir` fix that makes
+relative `workdir`/`save_to` resolve under the **case file's directory** (so these
+artifacts correctly land under `cases/out/<case>/`):
+
+```bash
+go run ./cmd/harness run cases/ --tag multi-file --max-tries 2 \
+  --interactive never --timeout 300 --parallel 4 \
+  --output results/multifile.report.json --verbose 2>&1 \
+  | tee results/multifile.console.txt
+```
+
+**This run was manually stopped before it finished**, so no `multifile.report.json`
+or final summary line was written — there is **no pass/fail or cost data** for it.
+The 10-phase `full-snake-game-project` was the bottleneck. The table below reflects
+only the files that reached disk in `cases/out/<case>/` at the time it was stopped.
+
+| Case                     | Phases | Files written | Status      | Files |
+|--------------------------|--------|---------------|-------------|-------|
+| `python-package`         | 3      | 3 / 3         | complete    | calculator.py, test_calculator.py, README.md |
+| `go-cli-tool`            | 4      | 4 / 4         | complete    | go.mod, main.go, greet.go, greet_test.go |
+| `flask-todo-api`         | 5      | 5 / 5         | complete    | requirements.txt, models.py, app.py, test_app.py, README.md |
+| `c-linked-list`          | 4      | 4 / 4         | complete    | list.h, list.c, main.c, Makefile |
+| `dockerized-node-app`    | 6      | 6 / 6         | complete    | package.json, server.js, Dockerfile, docker-compose.yml, .dockerignore, README.md |
+| `sql-schema-and-seed`    | 3      | 2 / 3         | partial     | schema.sql, seed.sql (missing queries.sql) |
+| `react-counter-spa`      | 4      | 3 / 4         | partial     | index.html, app.jsx, styles.css (missing README.md) |
+| `full-snake-game-project`| 10     | 5 / 10        | partial     | index.html, styles.css, constants.js, board.js, snake.js (missing food.js, input.js, game.js, main.js, README.md) |
+| `static-landing-page`    | 3      | 0 / 3         | interrupted | (workdir created, no file saved before stop) |
+| `bash-backup-toolkit`    | 2      | 0 / 2         | interrupted | (workdir created, no file saved before stop) |
+
+**5 of 10 cases produced their full file set; 3 partial; 2 had not yet written a
+file.** A file is only written when its phase's scorers pass, so the complete
+cases also passed every phase's scorers up to that point — but without the report
+JSON this cannot be stated as a scored pass/fail.
+
+Generated files live under `cases/out/<case>/` (git-ignored). To finish the run,
+re-run the command above; per-phase results are not resumable, so it re-runs all
+10 cases from scratch.
+
 ## Files in this directory
 
 - `mock.report.json` / `mock.console.txt` — mock pass output (git-ignored)
 - `run.report.json` / `run.console.txt` — real pass output (git-ignored)
+- `multifile.report.json` / `multifile.console.txt` — interrupted multi-file run
+  (git-ignored; report.json was never written because the run was stopped early)
 - `README.md` — this summary (kept in git)
