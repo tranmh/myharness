@@ -1,0 +1,69 @@
+{
+  "name": "dockerized-node-app",
+  "tags": ["multi-file", "project", "node", "docker", "web", "code"],
+  "workdir": "out/dockerized-node-app",
+  "model": "sonnet",
+  "max_cost_usd": 1.5,
+  "max_turns_total": 24,
+  "phases": [
+    {
+      "name": "pkg",
+      "prompt": "Write 'package.json' for a tiny Express web service named 'dockerized-node-app'. It must declare express as a dependency, set \"main\" to \"server.js\", and define a \"start\" script that runs \"node server.js\". Output ONLY the complete contents of package.json inside a single ```json code block, nothing else.",
+      "save_to": "package.json",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)\"express\"" },
+        { "type": "regex", "pattern": "(?i)\"start\"\\s*:\\s*\"node\\s+server\\.js\"" },
+        { "type": "regex", "pattern": "(?i)\"main\"\\s*:\\s*\"server\\.js\"" }
+      ]
+    },
+    {
+      "name": "server",
+      "prompt": "Here is package.json:\n\n{{.Out.pkg}}\n\nWrite 'server.js', an Express app that listens on the port from process.env.PORT (default 3000) and responds to GET / with JSON { \"status\": \"ok\" }. Use the express dependency declared above. Output ONLY the complete contents of server.js inside a single ```js code block, nothing else.",
+      "save_to": "server.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)require\\(['\"]express['\"]\\)|import\\s+express" },
+        { "type": "regex", "pattern": "(?i)process\\.env\\.PORT" },
+        { "type": "regex", "pattern": "(?i)\\.listen\\(" }
+      ]
+    },
+    {
+      "name": "dockerfile",
+      "prompt": "Here is package.json:\n\n{{.Out.pkg}}\n\nHere is server.js:\n\n{{.Out.server}}\n\nWrite a 'Dockerfile' that builds this app: start FROM a node base image, set a WORKDIR, COPY package.json and install dependencies, COPY the source, EXPOSE 3000, and CMD that runs the start script. Match the file names above. Output ONLY the complete contents of the Dockerfile inside a single ```dockerfile code block, nothing else.",
+      "save_to": "Dockerfile",
+      "scorers": [
+        { "type": "regex", "pattern": "(?im)^FROM\\s+node" },
+        { "type": "regex", "pattern": "(?im)^EXPOSE\\s+3000" },
+        { "type": "regex", "pattern": "(?im)^CMD" }
+      ]
+    },
+    {
+      "name": "compose",
+      "prompt": "Here is the Dockerfile:\n\n{{.Out.dockerfile}}\n\nWrite a 'docker-compose.yml' defining a single service 'web' that builds from the Dockerfile in the current directory and maps host port 3000 to container port 3000. Output ONLY the complete contents of docker-compose.yml inside a single ```yaml code block, nothing else.",
+      "save_to": "docker-compose.yml",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)services\\s*:" },
+        { "type": "regex", "pattern": "(?i)build\\s*:" },
+        { "type": "regex", "pattern": "3000:3000" }
+      ]
+    },
+    {
+      "name": "dockerignore",
+      "prompt": "Write a '.dockerignore' for the Node project above. It must at least ignore node_modules, npm-debug.log, and the .git directory. Output ONLY the complete contents of .dockerignore inside a single ```text code block, nothing else.",
+      "save_to": ".dockerignore",
+      "scorers": [
+        { "type": "contains", "value": "node_modules" },
+        { "type": "regex", "pattern": "(?i)\\.git" }
+      ]
+    },
+    {
+      "name": "readme",
+      "prompt": "Here are the project files.\n\npackage.json:\n\n{{.Out.pkg}}\n\nDockerfile:\n\n{{.Out.dockerfile}}\n\ndocker-compose.yml:\n\n{{.Out.compose}}\n\nWrite a 'README.md' documenting this dockerized Node service: a title, what it does (GET / returns {\"status\":\"ok\"}), how to run it locally with node, and how to build and run it with Docker and docker compose. Output ONLY the complete contents of README.md inside a single ```markdown code block, nothing else.",
+      "save_to": "README.md",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^#\\s+" },
+        { "type": "regex", "pattern": "(?i)docker" },
+        { "type": "judge", "rubric": "README.md documents the dockerized Node/Express service and gives correct instructions for both running it locally with node and building/running it via Docker and docker compose, consistent with the provided files." }
+      ]
+    }
+  ]
+}

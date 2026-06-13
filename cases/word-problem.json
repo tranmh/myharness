@@ -1,0 +1,9 @@
+{
+  "name": "word-problem",
+  "tags": ["reasoning"],
+  "model": "haiku",
+  "prompt": "A train travels 60 miles per hour for 2.5 hours. How many miles does it travel in total? Show only the final number.",
+  "scorers": [
+    { "type": "regex", "pattern": "\\b150\\b" }
+  ]
+}

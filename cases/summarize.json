@@ -1,0 +1,10 @@
+{
+  "name": "summarize",
+  "tags": ["judge"],
+  "model": "haiku",
+  "max_cost_usd": 0.25,
+  "prompt": "Summarize the following paragraph in one sentence:\n\n\"The water cycle describes how water moves through the environment. Water evaporates from oceans and lakes into the atmosphere, condenses into clouds, falls back to the surface as precipitation, and eventually flows through rivers back to the sea, repeating continuously.\"\n\nOutput ONLY the one-sentence summary.",
+  "scorers": [
+    { "type": "judge", "rubric": "The output is a single sentence that accurately and concisely captures the main idea of the water cycle described in the paragraph." }
+  ]
+}

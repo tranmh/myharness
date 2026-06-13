@@ -1,0 +1,9 @@
+{
+  "name": "haiku-poem",
+  "tags": ["judge"],
+  "model": "haiku",
+  "prompt": "Write a haiku about autumn. It must have three lines following the 5-7-5 syllable structure. Output ONLY the three lines of the haiku, nothing else.",
+  "scorers": [
+    { "type": "judge", "rubric": "The output is a three-line haiku about autumn that follows the 5-7-5 syllable pattern and contains vivid sensory imagery." }
+  ]
+}

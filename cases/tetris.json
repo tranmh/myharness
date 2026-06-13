@@ -1,0 +1,11 @@
+{
+  "name": "build-tetris",
+  "prompt": "Create a complete, single-file HTML5 Tetris game. It must be one self-contained .html file using a <canvas>, arrow-key controls (left/right/down to move, up to rotate), the 7 tetromino shapes, line clearing, and a visible score. Output ONLY the full HTML file inside one ```html code block, with no text before or after it.",
+  "model": "sonnet",
+  "save_to": "tetris.html",
+  "scorers": [
+    { "type": "contains", "value": "<canvas", "ignore_case": true },
+    { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+    { "type": "regex", "pattern": "(?i)keydown|ArrowLeft|keyCode" }
+  ]
+}

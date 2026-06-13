@@ -1,0 +1,39 @@
+{
+  "name": "static-landing-page",
+  "tags": ["multi-file", "project", "html", "css", "web", "code"],
+  "workdir": "out/static-landing-page",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "html",
+      "prompt": "Create the markup for a simple product landing page named 'index.html'. It must be a complete HTML5 document that links a stylesheet 'styles.css' in the <head> and a script 'app.js' with a defer attribute before </body>. Include a <header> with an <h1>, a hero <section>, a features section with three feature cards, and a footer. Give the primary call-to-action a button with id=\"cta\". Output ONLY the complete contents of index.html inside a single ```html code block, nothing else.",
+      "save_to": "index.html",
+      "scorers": [
+        { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+        { "type": "contains", "value": "styles.css" },
+        { "type": "contains", "value": "app.js" },
+        { "type": "regex", "pattern": "(?i)id=[\"']cta[\"']" }
+      ]
+    },
+    {
+      "name": "css",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nWrite 'styles.css' that styles this exact markup: a clean modern look, styles for the header, the hero section, the three feature cards laid out with flexbox or grid, the footer, and a visible style for #cta. Use the same class and id names that appear in the HTML above. Output ONLY the complete contents of styles.css inside a single ```css code block, nothing else.",
+      "save_to": "styles.css",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)#cta" },
+        { "type": "regex", "pattern": "(?i)(flex|grid)" },
+        { "type": "regex", "pattern": "\\{[^}]*:[^}]*\\}" }
+      ]
+    },
+    {
+      "name": "js",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nHere is styles.css:\n\n{{.Out.css}}\n\nWrite 'app.js' (vanilla JavaScript, no frameworks) that adds an event listener to the element with id 'cta' so that clicking it shows an alert or toggles a thank-you message. Reference the exact id used in the HTML above. Output ONLY the complete contents of app.js inside a single ```js code block, nothing else.",
+      "save_to": "app.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)getElementById\\(['\"]cta['\"]\\)|querySelector\\(['\"]#cta['\"]\\)" },
+        { "type": "regex", "pattern": "(?i)addEventListener" },
+        { "type": "judge", "rubric": "app.js is valid vanilla JavaScript that wires a click handler to the #cta element defined in the provided index.html, without relying on any framework." }
+      ]
+    }
+  ]
+}

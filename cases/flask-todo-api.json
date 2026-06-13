@@ -1,0 +1,58 @@
+{
+  "name": "flask-todo-api",
+  "tags": ["multi-file", "project", "python", "web", "code"],
+  "workdir": "out/flask-todo-api",
+  "model": "sonnet",
+  "max_turns_total": 20,
+  "phases": [
+    {
+      "name": "requirements",
+      "prompt": "Write a 'requirements.txt' for a small Flask to-do REST API. It must list Flask and Flask-SQLAlchemy (pinned to reasonable versions) and pytest for testing. Output ONLY the complete contents of requirements.txt inside a single ```text code block, nothing else.",
+      "save_to": "requirements.txt",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)Flask" },
+        { "type": "regex", "pattern": "(?i)pytest" }
+      ]
+    },
+    {
+      "name": "models",
+      "prompt": "Here is requirements.txt:\n\n{{.Out.requirements}}\n\nWrite 'models.py' defining a Flask-SQLAlchemy db object and a Todo model with columns id (int primary key), title (string, required), and done (boolean, default False). Add a to_dict() method on Todo returning those fields. Output ONLY the complete contents of models.py inside a single ```python code block, nothing else.",
+      "save_to": "models.py",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)class\\s+Todo" },
+        { "type": "regex", "pattern": "(?i)db\\s*=\\s*SQLAlchemy|from\\s+flask_sqlalchemy" },
+        { "type": "regex", "pattern": "(?i)def\\s+to_dict" }
+      ]
+    },
+    {
+      "name": "app",
+      "prompt": "Here is models.py:\n\n{{.Out.models}}\n\nWrite 'app.py' that creates the Flask app, configures a SQLite database, imports db and Todo from models, and defines routes: GET /todos (list), POST /todos (create from JSON title), and DELETE /todos/<id> (delete). Use the Todo model and to_dict() exactly as defined above. Output ONLY the complete contents of app.py inside a single ```python code block, nothing else.",
+      "save_to": "app.py",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)from\\s+models\\s+import|import\\s+models" },
+        { "type": "regex", "pattern": "(?i)@app\\.route\\(['\"]/todos" },
+        { "type": "regex", "pattern": "(?i)Flask\\(" }
+      ]
+    },
+    {
+      "name": "tests",
+      "prompt": "Here is app.py:\n\n{{.Out.app}}\n\nWrite 'test_app.py' using pytest and Flask's test client. Test creating a todo via POST /todos and then listing it via GET /todos. Match the exact routes and JSON fields used in app.py above. Output ONLY the complete contents of test_app.py inside a single ```python code block, nothing else.",
+      "save_to": "test_app.py",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)test_client|\\.client" },
+        { "type": "regex", "pattern": "(?i)/todos" },
+        { "type": "regex", "pattern": "(?i)def\\s+test_" }
+      ]
+    },
+    {
+      "name": "readme",
+      "prompt": "Here are the project files.\n\napp.py:\n\n{{.Out.app}}\n\nmodels.py:\n\n{{.Out.models}}\n\nWrite a 'README.md' documenting this Flask to-do API: a title, install instructions referencing requirements.txt, how to run the server, the available endpoints (matching the routes in app.py), and how to run the tests. Output ONLY the complete contents of README.md inside a single ```markdown code block, nothing else.",
+      "save_to": "README.md",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^#\\s+" },
+        { "type": "regex", "pattern": "(?i)/todos" },
+        { "type": "judge", "rubric": "README.md documents the Flask to-do API and accurately describes the endpoints (list, create, delete) and how to install dependencies and run the server, consistent with the provided app.py." }
+      ]
+    }
+  ]
+}

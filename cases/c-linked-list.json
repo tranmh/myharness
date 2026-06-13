@@ -1,0 +1,48 @@
+{
+  "name": "c-linked-list",
+  "tags": ["multi-file", "project", "c", "code"],
+  "workdir": "out/c-linked-list",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "header",
+      "prompt": "Write 'list.h', the header for a singly linked list of ints in C. Include an include guard, a struct Node { int value; struct Node *next; }, and function declarations: list_push(struct Node **head, int value), list_length(struct Node *head), list_free(struct Node *head), and list_print(struct Node *head). Output ONLY the complete contents of list.h inside a single ```c code block, nothing else.",
+      "save_to": "list.h",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)#ifndef|#pragma once" },
+        { "type": "regex", "pattern": "(?i)struct\\s+Node" },
+        { "type": "regex", "pattern": "(?i)list_push" }
+      ]
+    },
+    {
+      "name": "impl",
+      "prompt": "Here is list.h:\n\n{{.Out.header}}\n\nWrite 'list.c' that includes \"list.h\" and implements every function declared in the header exactly as declared, using malloc/free. Output ONLY the complete contents of list.c inside a single ```c code block, nothing else.",
+      "save_to": "list.c",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)#include\\s+\"list\\.h\"" },
+        { "type": "regex", "pattern": "(?i)malloc" },
+        { "type": "regex", "pattern": "(?i)list_push" }
+      ]
+    },
+    {
+      "name": "main",
+      "prompt": "Here is list.h:\n\n{{.Out.header}}\n\nWrite 'main.c' that includes \"list.h\", pushes a few integers onto a list, prints the list and its length using the declared functions, and frees it before returning 0 from main. Use the exact function names from the header. Output ONLY the complete contents of main.c inside a single ```c code block, nothing else.",
+      "save_to": "main.c",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)#include\\s+\"list\\.h\"" },
+        { "type": "regex", "pattern": "(?i)int\\s+main" },
+        { "type": "regex", "pattern": "(?i)list_push|list_free" }
+      ]
+    },
+    {
+      "name": "makefile",
+      "prompt": "Here are the sources.\n\nlist.c includes list.h and implements the list; main.c is the entry point.\n\nWrite a 'Makefile' that compiles list.c and main.c into an executable named 'list_demo' using gcc with -Wall, and provides a 'clean' target. Output ONLY the complete contents of the Makefile inside a single ```makefile code block, nothing else.",
+      "save_to": "Makefile",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)gcc|cc" },
+        { "type": "regex", "pattern": "(?m)^clean\\s*:" },
+        { "type": "judge", "rubric": "The Makefile compiles list.c and main.c with gcc into an executable and includes a working clean target; targets and prerequisites are syntactically valid make." }
+      ]
+    }
+  ]
+}

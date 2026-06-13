@@ -1,0 +1,23 @@
+{
+  "name": "api-design-then-impl",
+  "tags": ["phases", "code", "judge"],
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "design",
+      "prompt": "Design a small REST API for managing a to-do list (create, list, complete, delete tasks). Output ONLY a single JSON object describing the API as a spec: a list of endpoints, each with method, path, and a short description. No markdown fences, no commentary.",
+      "scorers": [
+        { "type": "regex", "pattern": "(?s)^\\s*\\{.*\\}\\s*$" },
+        { "type": "regex", "pattern": "(?i)\"?(method|path)\"?" }
+      ]
+    },
+    {
+      "name": "implement",
+      "prompt": "Here is a REST API spec:\n\n{{.Prev}}\n\nPick the endpoint that creates a task and implement it as a single Express.js (Node) route handler. Output ONLY the JavaScript code inside one ```js code block.",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)app\\.(post|get|put|delete)|router\\.(post|get)|function" },
+        { "type": "judge", "rubric": "The code is a plausible Express.js route handler that implements the create-task endpoint from the provided spec, accepting input and returning a response." }
+      ]
+    }
+  ]
+}

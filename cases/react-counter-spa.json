@@ -1,0 +1,48 @@
+{
+  "name": "react-counter-spa",
+  "tags": ["multi-file", "project", "html", "web", "react", "code"],
+  "workdir": "out/react-counter-spa",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "html",
+      "prompt": "Write 'index.html' for a no-build React counter app served straight from CDNs. Load React and ReactDOM UMD builds and Babel standalone from a CDN via <script> tags, link a stylesheet 'styles.css', include a <div id=\"root\"></div>, and load 'app.jsx' with type=\"text/babel\". Output ONLY the complete contents of index.html inside a single ```html code block, nothing else.",
+      "save_to": "index.html",
+      "scorers": [
+        { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+        { "type": "regex", "pattern": "(?i)id=[\"']root[\"']" },
+        { "type": "regex", "pattern": "(?i)text/babel" },
+        { "type": "contains", "value": "app.jsx" }
+      ]
+    },
+    {
+      "name": "app",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nWrite 'app.jsx', a single-file React app (no imports, using the global React from the CDN script in the HTML above) that defines a Counter component with useState, buttons to increment and decrement, and a reset button, then renders it into the #root element. Match the exact root element id from the HTML above. Output ONLY the complete contents of app.jsx inside a single ```jsx code block, nothing else.",
+      "save_to": "app.jsx",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)useState" },
+        { "type": "regex", "pattern": "(?i)ReactDOM" },
+        { "type": "regex", "pattern": "(?i)['\"]?#?root['\"]?" }
+      ]
+    },
+    {
+      "name": "css",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nHere is app.jsx:\n\n{{.Out.app}}\n\nWrite 'styles.css' that styles the counter UI rendered by the component above: center the app, style the count display large and bold, and style the buttons. Output ONLY the complete contents of styles.css inside a single ```css code block, nothing else.",
+      "save_to": "styles.css",
+      "scorers": [
+        { "type": "regex", "pattern": "\\{[^}]*:[^}]*\\}" },
+        { "type": "regex", "pattern": "(?i)button" }
+      ]
+    },
+    {
+      "name": "readme",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nHere is app.jsx:\n\n{{.Out.app}}\n\nWrite a 'README.md' for this no-build CDN React counter: a title, a short description, and clear instructions to run it (e.g. open index.html directly or serve the folder with a static server), noting that no npm install or build step is needed. Output ONLY the complete contents of README.md inside a single ```markdown code block, nothing else.",
+      "save_to": "README.md",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^#\\s+" },
+        { "type": "regex", "pattern": "(?i)index\\.html" },
+        { "type": "judge", "rubric": "README.md describes a no-build CDN-based React counter app and gives correct instructions for opening or serving index.html without an npm build step." }
+      ]
+    }
+  ]
+}

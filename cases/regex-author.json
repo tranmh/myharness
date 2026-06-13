@@ -1,0 +1,11 @@
+{
+  "name": "regex-author",
+  "tags": ["code"],
+  "model": "haiku",
+  "prompt": "Write a single regular expression that matches a valid email address and is anchored to the whole string (it must start with ^ and end with $). Output ONLY the regex pattern on one line, with no delimiters, no quotes, and no explanation.",
+  "scorers": [
+    { "type": "contains", "value": "^" },
+    { "type": "contains", "value": "$" },
+    { "type": "contains", "value": "@" }
+  ]
+}

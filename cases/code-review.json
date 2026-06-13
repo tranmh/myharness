@@ -1,0 +1,9 @@
+{
+  "name": "code-review",
+  "tags": ["judge", "code"],
+  "model": "sonnet",
+  "prompt": "Review the following Python function for bugs and quality issues:\n\n```python\ndef average(nums):\n    total = 0\n    for n in nums:\n        total += n\n    return total / len(nums)\n```\n\nIdentify any bugs (e.g. division by zero on an empty list), explain the issue, and suggest a fix.",
+  "scorers": [
+    { "type": "judge", "rubric": "The review identifies the division-by-zero bug when the input list is empty, explains it clearly, and proposes a reasonable fix such as a guard for an empty list." }
+  ]
+}

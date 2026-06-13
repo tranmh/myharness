@@ -1,0 +1,107 @@
+{
+  "name": "full-snake-game-project",
+  "tags": ["multi-file", "project", "game", "html", "web", "code", "judge"],
+  "workdir": "out/full-snake-game-project",
+  "model": "sonnet",
+  "max_cost_usd": 2.0,
+  "max_turns_total": 40,
+  "phases": [
+    {
+      "name": "html",
+      "prompt": "Write 'index.html' for a browser Snake game split across several JS modules. It must be a complete HTML5 document that links 'styles.css', contains a <canvas id=\"board\" width=\"400\" height=\"400\"></canvas> and a score display with id=\"score\", and at the end of <body> loads ES modules with a single <script type=\"module\" src=\"main.js\"></script>. Output ONLY the complete contents of index.html inside a single ```html code block, nothing else.",
+      "save_to": "index.html",
+      "scorers": [
+        { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+        { "type": "regex", "pattern": "(?i)id=[\"']board[\"']" },
+        { "type": "regex", "pattern": "(?i)type=[\"']module[\"']" },
+        { "type": "contains", "value": "main.js" }
+      ]
+    },
+    {
+      "name": "css",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nWrite 'styles.css' that styles this page: center the canvas and score on the page, give the #board canvas a visible border, and style the #score text. Use the exact ids from the HTML above. Output ONLY the complete contents of styles.css inside a single ```css code block, nothing else.",
+      "save_to": "styles.css",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)#board" },
+        { "type": "regex", "pattern": "\\{[^}]*:[^}]*\\}" }
+      ]
+    },
+    {
+      "name": "constants",
+      "prompt": "Write 'constants.js', an ES module that exports game constants for a canvas Snake game: CELL_SIZE (e.g. 20), GRID_SIZE (e.g. 20), and TICK_MS (e.g. 120). Use named `export const` declarations. Output ONLY the complete contents of constants.js inside a single ```js code block, nothing else.",
+      "save_to": "constants.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)export\\s+const\\s+CELL_SIZE" },
+        { "type": "regex", "pattern": "(?i)export\\s+const\\s+GRID_SIZE" }
+      ]
+    },
+    {
+      "name": "board",
+      "prompt": "Here is constants.js:\n\n{{.Out.constants}}\n\nWrite 'board.js', an ES module that imports CELL_SIZE and GRID_SIZE from './constants.js' and exports a function clearBoard(ctx) and a function drawCell(ctx, x, y, color) that fills one grid cell on the canvas 2D context. Use the imported constants. Output ONLY the complete contents of board.js inside a single ```js code block, nothing else.",
+      "save_to": "board.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)import\\s*\\{[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]" },
+        { "type": "regex", "pattern": "(?i)export\\s+function\\s+drawCell" }
+      ]
+    },
+    {
+      "name": "snake",
+      "prompt": "Here is constants.js:\n\n{{.Out.constants}}\n\nWrite 'snake.js', an ES module exporting a class Snake. It tracks an array of body segments ({x,y}), a current direction, and methods setDirection(dir), move(), grow(), head(), and a way to detect self-collision. It may import constants from './constants.js' if useful. Output ONLY the complete contents of snake.js inside a single ```js code block, nothing else.",
+      "save_to": "snake.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)export\\s+class\\s+Snake" },
+        { "type": "regex", "pattern": "(?i)setDirection|move\\s*\\(" }
+      ]
+    },
+    {
+      "name": "food",
+      "prompt": "Here is constants.js:\n\n{{.Out.constants}}\n\nHere is snake.js:\n\n{{.Out.snake}}\n\nWrite 'food.js', an ES module that imports GRID_SIZE from './constants.js' and exports a function spawnFood(snake) that returns a random {x,y} grid position not currently occupied by the given snake's body. Use the Snake structure from snake.js above. Output ONLY the complete contents of food.js inside a single ```js code block, nothing else.",
+      "save_to": "food.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)import\\s*\\{[^}]*GRID_SIZE[^}]*\\}\\s*from\\s*['\"]\\./constants\\.js['\"]" },
+        { "type": "regex", "pattern": "(?i)export\\s+function\\s+spawnFood" }
+      ]
+    },
+    {
+      "name": "input",
+      "prompt": "Here is snake.js:\n\n{{.Out.snake}}\n\nWrite 'input.js', an ES module that exports a function attachInput(snake) which adds a keydown listener mapping the arrow keys (and optionally WASD) to snake.setDirection(...), preventing 180-degree reversals. Call the exact setDirection method from snake.js above. Output ONLY the complete contents of input.js inside a single ```js code block, nothing else.",
+      "save_to": "input.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)export\\s+function\\s+attachInput" },
+        { "type": "regex", "pattern": "(?i)addEventListener\\(['\"]keydown['\"]" },
+        { "type": "regex", "pattern": "(?i)setDirection" }
+      ]
+    },
+    {
+      "name": "game",
+      "prompt": "Here are the modules.\n\nconstants.js:\n\n{{.Out.constants}}\n\nboard.js:\n\n{{.Out.board}}\n\nsnake.js:\n\n{{.Out.snake}}\n\nfood.js:\n\n{{.Out.food}}\n\nWrite 'game.js', an ES module exporting a class Game (or a createGame function) that imports from './constants.js', './board.js', './snake.js', and './food.js', and ties them together: a tick loop that moves the snake, eats food (growing and updating score), redraws the board, and ends on collision. Use the exact exported names from the modules above. Output ONLY the complete contents of game.js inside a single ```js code block, nothing else.",
+      "save_to": "game.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)import\\s.*from\\s*['\"]\\./snake\\.js['\"]" },
+        { "type": "regex", "pattern": "(?i)import\\s.*from\\s*['\"]\\./food\\.js['\"]" },
+        { "type": "regex", "pattern": "(?i)export\\s+(class\\s+Game|function|const)" }
+      ]
+    },
+    {
+      "name": "main",
+      "prompt": "Here is index.html:\n\n{{.Out.html}}\n\nHere is game.js:\n\n{{.Out.game}}\n\nHere is input.js:\n\n{{.Out.input}}\n\nWrite 'main.js', the entry-point ES module loaded by index.html. It grabs the #board canvas and its 2D context, grabs the #score element, imports and starts the Game from './game.js', wires input via attachInput from './input.js', and kicks off the game loop. Use the exact element ids from the HTML and the exact exports from game.js and input.js above. Output ONLY the complete contents of main.js inside a single ```js code block, nothing else.",
+      "save_to": "main.js",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)getElementById\\(['\"]board['\"]\\)|querySelector\\(['\"]#board['\"]\\)" },
+        { "type": "regex", "pattern": "(?i)import\\s.*from\\s*['\"]\\./game\\.js['\"]" },
+        { "type": "regex", "pattern": "(?i)import\\s.*from\\s*['\"]\\./input\\.js['\"]" },
+        { "type": "judge", "rubric": "main.js is a valid ES-module entry point that obtains the #board canvas context and #score element from the provided index.html, imports and starts the Game from game.js, wires attachInput from input.js, and starts the loop, consistent with the exported names of those modules." }
+      ]
+    },
+    {
+      "name": "readme",
+      "prompt": "Here is the project structure: index.html loads main.js (ES module) which uses game.js, snake.js, food.js, board.js, input.js, and constants.js, styled by styles.css.\n\nindex.html:\n\n{{.Out.html}}\n\nWrite a 'README.md' documenting this modular browser Snake game: a title, a short description, a list of the source files and what each does, the controls, and how to run it (it uses ES modules, so it must be served over http, not opened as a file:// URL). Output ONLY the complete contents of README.md inside a single ```markdown code block, nothing else.",
+      "save_to": "README.md",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^#\\s+" },
+        { "type": "regex", "pattern": "(?i)module|http" },
+        { "type": "regex", "pattern": "(?i)snake" }
+      ]
+    }
+  ]
+}

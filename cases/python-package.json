@@ -1,0 +1,38 @@
+{
+  "name": "python-package",
+  "tags": ["multi-file", "project", "python", "code"],
+  "workdir": "out/python-package",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "module",
+      "prompt": "Write a Python module 'calculator.py' that defines a class Calculator with methods add(a, b), subtract(a, b), multiply(a, b), and divide(a, b). divide must raise ValueError on division by zero. Include a module-level docstring. Output ONLY the complete contents of calculator.py inside a single ```python code block, nothing else.",
+      "save_to": "calculator.py",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^\\s*class\\s+Calculator" },
+        { "type": "regex", "pattern": "(?m)def\\s+(add|divide)" },
+        { "type": "regex", "pattern": "(?i)ValueError" }
+      ]
+    },
+    {
+      "name": "tests",
+      "prompt": "Here is calculator.py:\n\n{{.Out.module}}\n\nWrite 'test_calculator.py' using pytest that imports the Calculator class from calculator and tests every method, including a test that divide by zero raises ValueError (use pytest.raises). Match the exact method names and class name from the module above. Output ONLY the complete contents of test_calculator.py inside a single ```python code block, nothing else.",
+      "save_to": "test_calculator.py",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)import\\s+pytest" },
+        { "type": "regex", "pattern": "(?i)from\\s+calculator\\s+import|import\\s+calculator" },
+        { "type": "regex", "pattern": "(?i)pytest\\.raises" }
+      ]
+    },
+    {
+      "name": "readme",
+      "prompt": "Here is calculator.py:\n\n{{.Out.module}}\n\nHere is test_calculator.py:\n\n{{.Out.tests}}\n\nWrite a 'README.md' documenting this small package: a title, a short description, an example showing how to import and use the Calculator class, and a section explaining how to run the tests with pytest. Refer to the actual method names from the module. Output ONLY the complete contents of README.md inside a single ```markdown code block, nothing else.",
+      "save_to": "README.md",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^#\\s+" },
+        { "type": "regex", "pattern": "(?i)pytest" },
+        { "type": "regex", "pattern": "(?i)Calculator" }
+      ]
+    }
+  ]
+}

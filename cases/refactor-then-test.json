@@ -1,0 +1,27 @@
+{
+  "name": "refactor-then-test",
+  "tags": ["phases", "code"],
+  "workdir": "out/refactor",
+  "setup": ["mkdir -p ."],
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "write-function",
+      "prompt": "Write a Python function named is_palindrome(s) that returns True if the string s is a palindrome (ignoring case and spaces) and False otherwise. Output ONLY the Python code inside one ```python code block.",
+      "save_to": "is_palindrome.py",
+      "scorers": [
+        { "type": "contains", "value": "def is_palindrome" },
+        { "type": "regex", "pattern": "(?i)return" }
+      ]
+    },
+    {
+      "name": "write-tests",
+      "prompt": "Here is a Python function:\n\n{{.Prev}}\n\nWrite a set of unit tests for it using Python's unittest module. Cover palindromes, non-palindromes, and the case/space-insensitive behavior. Output ONLY the Python test code inside one ```python code block.",
+      "save_to": "test_is_palindrome.py",
+      "scorers": [
+        { "type": "contains", "value": "import unittest" },
+        { "type": "regex", "pattern": "(?i)assert" }
+      ]
+    }
+  ]
+}

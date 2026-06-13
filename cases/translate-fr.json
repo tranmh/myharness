@@ -1,0 +1,10 @@
+{
+  "name": "translate-fr",
+  "tags": ["qa", "judge"],
+  "model": "haiku",
+  "prompt": "Translate the following English sentence into natural French: \"Good morning, how are you?\" Output ONLY the French translation, nothing else.",
+  "scorers": [
+    { "type": "regex", "pattern": "(?i)bonjour|bonne" },
+    { "type": "judge", "rubric": "The output is a fluent, grammatically correct French translation of \"Good morning, how are you?\" and contains no English." }
+  ]
+}

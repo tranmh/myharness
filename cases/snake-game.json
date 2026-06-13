@@ -1,0 +1,14 @@
+{
+  "name": "snake-game",
+  "tags": ["game", "html"],
+  "workdir": "out/snake",
+  "model": "sonnet",
+  "max_cost_usd": 1.0,
+  "prompt": "Create a complete, single-file HTML5 Snake game. It must be one self-contained .html file using a <canvas>, arrow-key controls to steer the snake, growing when it eats food, game-over on collision, and a visible score. Output ONLY the full HTML file inside one ```html code block, with no text before or after it.",
+  "save_to": "snake.html",
+  "scorers": [
+    { "type": "contains", "value": "<canvas", "ignore_case": true },
+    { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+    { "type": "regex", "pattern": "(?i)keydown|ArrowLeft|ArrowUp|keyCode" }
+  ]
+}

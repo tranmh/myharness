@@ -1,0 +1,47 @@
+{
+  "name": "go-cli-tool",
+  "tags": ["multi-file", "project", "go", "code"],
+  "workdir": "out/go-cli-tool",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "mod",
+      "prompt": "Write a 'go.mod' file for a small command-line greeting tool. Use the module path 'example.com/greet' and a recent Go version (e.g. go 1.22). Output ONLY the complete contents of go.mod inside a single ```go code block, nothing else.",
+      "save_to": "go.mod",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^module\\s+example\\.com/greet" },
+        { "type": "regex", "pattern": "(?m)^go\\s+1\\." }
+      ]
+    },
+    {
+      "name": "greet",
+      "prompt": "Here is go.mod:\n\n{{.Out.mod}}\n\nWrite 'greet.go' in package main. It must define an exported function Greet(name string) string that returns \"Hello, <name>!\" and returns \"Hello, World!\" when name is empty. Output ONLY the complete contents of greet.go inside a single ```go code block, nothing else.",
+      "save_to": "greet.go",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^package\\s+main" },
+        { "type": "regex", "pattern": "(?i)func\\s+Greet\\s*\\(\\s*name\\s+string\\s*\\)\\s*string" }
+      ]
+    },
+    {
+      "name": "main",
+      "prompt": "Here is greet.go:\n\n{{.Out.greet}}\n\nWrite 'main.go' in package main. The main function reads the first command-line argument (os.Args) as a name, calls Greet from greet.go, and prints the result with fmt.Println. Use the exact Greet signature shown above. Output ONLY the complete contents of main.go inside a single ```go code block, nothing else.",
+      "save_to": "main.go",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^package\\s+main" },
+        { "type": "regex", "pattern": "(?i)func\\s+main\\s*\\(" },
+        { "type": "regex", "pattern": "(?i)Greet\\s*\\(" }
+      ]
+    },
+    {
+      "name": "test",
+      "prompt": "Here is greet.go:\n\n{{.Out.greet}}\n\nWrite 'greet_test.go' in package main using the standard testing package. Test that Greet(\"Ada\") returns \"Hello, Ada!\" and that Greet(\"\") returns \"Hello, World!\". Use the exact Greet signature shown above. Output ONLY the complete contents of greet_test.go inside a single ```go code block, nothing else.",
+      "save_to": "greet_test.go",
+      "scorers": [
+        { "type": "regex", "pattern": "(?m)^package\\s+main" },
+        { "type": "regex", "pattern": "(?i)import\\s+\"testing\"|\"testing\"" },
+        { "type": "regex", "pattern": "(?i)func\\s+Test\\w*\\s*\\(\\s*t\\s+\\*testing\\.T" },
+        { "type": "judge", "rubric": "greet_test.go is a valid Go test in package main that exercises Greet for both a named and an empty input and asserts the expected greeting strings." }
+      ]
+    }
+  ]
+}

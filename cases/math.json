@@ -1,0 +1,8 @@
+{
+  "name": "simple-arithmetic",
+  "prompt": "Compute 17 * 23 and show only the final number.",
+  "model": "sonnet",
+  "scorers": [
+    { "type": "regex", "pattern": "\\b391\\b" }
+  ]
+}

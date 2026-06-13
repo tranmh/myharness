@@ -1,0 +1,30 @@
+{
+  "name": "tetris-phases",
+  "tags": ["game", "html", "phases", "judge"],
+  "workdir": "out/tetris",
+  "max_cost_usd": 1.0,
+  "max_turns_total": 30,
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "build",
+      "prompt": "Create a complete, single-file HTML5 Tetris game. It must be one self-contained .html file using a <canvas>, arrow-key controls (left/right/down to move, up to rotate), the 7 tetromino shapes, line clearing, and a visible score. Output ONLY the full HTML file inside one ```html code block, with no text before or after it.",
+      "save_to": "tetris.html",
+      "max_tries": 5,
+      "scorers": [
+        { "type": "contains", "value": "<canvas", "ignore_case": true },
+        { "type": "contains", "value": "<!DOCTYPE html", "ignore_case": true },
+        { "type": "regex", "pattern": "(?i)keydown|ArrowLeft|keyCode" }
+      ]
+    },
+    {
+      "name": "pause",
+      "prompt": "Here is the current Tetris game:\n\n{{.Prev}}\n\nAdd a pause feature toggled by the 'p' key (pressing P pauses the game, pressing it again resumes). Output ONLY the full updated HTML file inside one ```html code block, with no text before or after it.",
+      "save_to": "tetris.html",
+      "scorers": [
+        { "type": "contains", "value": "<canvas", "ignore_case": true },
+        { "type": "judge", "rubric": "The HTML implements a working pause toggle bound to the 'p' key that stops and resumes the Tetris game loop." }
+      ]
+    }
+  ]
+}

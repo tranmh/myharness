@@ -1,0 +1,12 @@
+{
+  "name": "json-extract",
+  "tags": ["data"],
+  "model": "haiku",
+  "prompt": "From this sentence: \"Ada Lovelace was born in 1815 in London.\" extract the person's name, birth year, and city. Output ONLY a single JSON object with exactly the keys \"name\", \"year\", and \"city\". No markdown, no code fences, no extra text.",
+  "scorers": [
+    { "type": "regex", "pattern": "\"name\"\\s*:" },
+    { "type": "regex", "pattern": "\"year\"\\s*:" },
+    { "type": "regex", "pattern": "\"city\"\\s*:" },
+    { "type": "regex", "pattern": "(?s)^\\s*\\{.*\\}\\s*$" }
+  ]
+}

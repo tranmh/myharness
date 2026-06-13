@@ -1,0 +1,11 @@
+{
+  "name": "sql-query",
+  "tags": ["code", "data"],
+  "model": "haiku",
+  "prompt": "Given two tables: customers(id, name) and orders(id, customer_id, total), write a single SQL query that returns each customer's name and the sum of their order totals, grouped by customer. Use an explicit JOIN. Output ONLY the SQL statement, no commentary and no code fences.",
+  "scorers": [
+    { "type": "contains", "value": "SELECT", "ignore_case": true },
+    { "type": "contains", "value": "JOIN", "ignore_case": true },
+    { "type": "regex", "pattern": "(?i)group\\s+by" }
+  ]
+}

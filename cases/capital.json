@@ -1,0 +1,9 @@
+{
+  "name": "capital-of-france",
+  "prompt": "What is the capital of France? Answer with one word only.",
+  "model": "sonnet",
+  "system": "You are terse. Answer with a single word, no punctuation.",
+  "scorers": [
+    { "type": "contains", "value": "Paris", "ignore_case": true }
+  ]
+}

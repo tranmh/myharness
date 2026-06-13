@@ -1,0 +1,9 @@
+{
+  "name": "slugify",
+  "tags": ["code", "data"],
+  "model": "haiku",
+  "prompt": "Turn this article title into a URL slug: \"Hello World: A Friendly Guide!\". A slug is lowercase, words separated by single hyphens, with no punctuation. Output ONLY the slug, nothing else.",
+  "scorers": [
+    { "type": "exact", "value": "hello-world-a-friendly-guide", "ignore_case": true }
+  ]
+}

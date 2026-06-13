@@ -1,0 +1,12 @@
+{
+  "name": "csv-to-json",
+  "tags": ["data"],
+  "model": "haiku",
+  "prompt": "Convert this CSV into a JSON array of objects, one object per data row, using the header names as keys:\n\nname,age,city\nAlice,30,Paris\nBob,25,Berlin\n\nOutput ONLY the JSON array, no markdown fences and no commentary.",
+  "scorers": [
+    { "type": "contains", "value": "\"name\"" },
+    { "type": "contains", "value": "\"age\"" },
+    { "type": "contains", "value": "\"city\"" },
+    { "type": "contains", "value": "Alice" }
+  ]
+}

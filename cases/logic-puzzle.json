@@ -1,0 +1,9 @@
+{
+  "name": "logic-puzzle",
+  "tags": ["reasoning"],
+  "model": "sonnet",
+  "prompt": "Three friends sit in a row. Alice is not on either end. Bob is to the left of Alice. Carol is somewhere. From left to right, who is in the middle seat? Answer with one name only.",
+  "scorers": [
+    { "type": "contains", "value": "Alice", "ignore_case": true }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "unit-convert",
+  "tags": ["qa"],
+  "model": "haiku",
+  "prompt": "Convert 10 miles to kilometers, using 1 mile = 1.60934 km. Round to one decimal place and show only the final number.",
+  "scorers": [
+    { "type": "regex", "pattern": "\\b16\\.1\\b" }
+  ]
+}

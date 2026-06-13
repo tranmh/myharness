@@ -1,0 +1,11 @@
+{
+  "name": "bash-oneliner",
+  "tags": ["code"],
+  "model": "haiku",
+  "prompt": "Write a single bash one-liner that finds all files ending in .log under the current directory and deletes them. Use the find command. Output ONLY the one-liner, no explanation and no code fences.",
+  "scorers": [
+    { "type": "contains", "value": "find" },
+    { "type": "regex", "pattern": "(?i)\\.log" },
+    { "type": "regex", "pattern": "(?i)-delete|rm\\b|-exec" }
+  ]
+}

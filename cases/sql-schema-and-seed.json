@@ -1,0 +1,38 @@
+{
+  "name": "sql-schema-and-seed",
+  "tags": ["multi-file", "project", "sql", "data", "code"],
+  "workdir": "out/sql-schema-and-seed",
+  "model": "sonnet",
+  "phases": [
+    {
+      "name": "schema",
+      "prompt": "Write 'schema.sql' for a small blog database (standard SQL, SQLite-compatible). Create two tables: authors (id INTEGER PRIMARY KEY, name TEXT NOT NULL, email TEXT) and posts (id INTEGER PRIMARY KEY, author_id INTEGER, title TEXT NOT NULL, body TEXT, created_at TEXT) with a FOREIGN KEY from posts.author_id to authors.id. Output ONLY the complete contents of schema.sql inside a single ```sql code block, nothing else.",
+      "save_to": "schema.sql",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)CREATE\\s+TABLE\\s+authors" },
+        { "type": "regex", "pattern": "(?i)CREATE\\s+TABLE\\s+posts" },
+        { "type": "regex", "pattern": "(?i)FOREIGN\\s+KEY" }
+      ]
+    },
+    {
+      "name": "seed",
+      "prompt": "Here is schema.sql:\n\n{{.Out.schema}}\n\nWrite 'seed.sql' with INSERT statements that populate the authors and posts tables defined above: at least two authors and at least three posts, with posts referencing valid author ids. Use the exact table and column names from the schema above. Output ONLY the complete contents of seed.sql inside a single ```sql code block, nothing else.",
+      "save_to": "seed.sql",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)INSERT\\s+INTO\\s+authors" },
+        { "type": "regex", "pattern": "(?i)INSERT\\s+INTO\\s+posts" }
+      ]
+    },
+    {
+      "name": "queries",
+      "prompt": "Here is schema.sql:\n\n{{.Out.schema}}\n\nHere is seed.sql:\n\n{{.Out.seed}}\n\nWrite 'queries.sql' with at least three useful SELECT queries against this data: (1) all posts with their author's name (a JOIN), (2) a count of posts per author (GROUP BY), and (3) the most recent post ordered by created_at. Use the exact table and column names from the schema above. Output ONLY the complete contents of queries.sql inside a single ```sql code block, nothing else.",
+      "save_to": "queries.sql",
+      "scorers": [
+        { "type": "regex", "pattern": "(?i)SELECT" },
+        { "type": "regex", "pattern": "(?i)JOIN" },
+        { "type": "regex", "pattern": "(?i)GROUP\\s+BY" },
+        { "type": "judge", "rubric": "queries.sql contains valid SQL SELECT statements (including a JOIN of posts and authors and a GROUP BY count per author) consistent with the table and column names defined in the provided schema.sql." }
+      ]
+    }
+  ]
+}

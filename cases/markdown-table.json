@@ -1,0 +1,11 @@
+{
+  "name": "markdown-table",
+  "tags": ["data"],
+  "model": "haiku",
+  "prompt": "Create a Markdown table with the columns Name, Age, and City, and these two rows: (Alice, 30, Paris) and (Bob, 25, Berlin). Include the header separator row. Output ONLY the Markdown table.",
+  "scorers": [
+    { "type": "regex", "pattern": "\\|.*\\|.*\\|" },
+    { "type": "regex", "pattern": "\\|\\s*-+\\s*\\|" },
+    { "type": "contains", "value": "Alice" }
+  ]
+}

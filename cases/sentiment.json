@@ -1,0 +1,10 @@
+{
+  "name": "sentiment",
+  "tags": ["qa", "reasoning"],
+  "model": "haiku",
+  "system": "You are a sentiment classifier. Respond with exactly one lowercase word.",
+  "prompt": "Classify the sentiment of this sentence as exactly one of: positive, negative, or neutral.\n\nSentence: \"I absolutely loved this movie, it was fantastic!\"\n\nAnswer with one word only.",
+  "scorers": [
+    { "type": "exact", "value": "positive", "ignore_case": true }
+  ]
+}
